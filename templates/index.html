@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html class="dark bg-background text-on-background" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>NeuroIntel - AI MRI Diagnostic Intelligence</title>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;family=Montserrat:wght@100..900&amp;display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#2d004f",
+                    "on-primary-container": "#006a71",
+                    "secondary-fixed-dim": "#dfb7ff",
+                    "surface-bright": "#353946",
+                    "on-secondary-container": "#f7e6ff",
+                    "on-background": "#dfe2f3",
+                    "background": "#0f131f",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-secondary": "#4b007e",
+                    "surface-container-high": "#262a37",
+                    "primary": "#e1fdff",
+                    "tertiary-fixed": "#d8e2ff",
+                    "tertiary": "#f7f7ff",
+                    "error": "#ffb4ab",
+                    "outline-variant": "#3a494b",
+                    "surface": "#0f131f",
+                    "secondary-container": "#9d05ff",
+                    "on-tertiary-fixed-variant": "#004493",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#adc7ff",
+                    "primary-container": "#00f2ff",
+                    "secondary": "#dfb7ff",
+                    "outline": "#849495",
+                    "surface-variant": "#313442",
+                    "inverse-primary": "#00696f",
+                    "surface-tint": "#00dbe7",
+                    "surface-container": "#1b1f2c",
+                    "primary-fixed-dim": "#00dbe7",
+                    "on-tertiary": "#002e68",
+                    "surface-container-low": "#171b28",
+                    "tertiary-container": "#ccdbff",
+                    "on-surface": "#dfe2f3",
+                    "on-tertiary-fixed": "#001a41",
+                    "surface-container-highest": "#313442",
+                    "on-primary": "#00363a",
+                    "primary-fixed": "#74f5ff",
+                    "error-container": "#93000a",
+                    "inverse-on-surface": "#2c303d",
+                    "inverse-surface": "#dfe2f3",
+                    "on-tertiary-container": "#005cc2",
+                    "on-secondary-fixed-variant": "#6b00b0",
+                    "surface-dim": "#0f131f",
+                    "surface-container-lowest": "#0a0e1a",
+                    "on-surface-variant": "#b9cacb",
+                    "on-primary-fixed": "#002022",
+                    "on-error": "#690005",
+                    "secondary-fixed": "#f1daff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "label-mono": ["Geist"],
+                    "data-metric": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["52px", {"lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["20px", {"lineHeight": "30px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "42px", "fontWeight": "600"}],
+                    "headline-lg": ["42px", {"lineHeight": "52px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-mono": ["15px", {"lineHeight": "22px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "data-metric": ["26px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          }
+        },
+      }
+    </script>
+    <style>
+        /* Global font size increase */
+        html {
+            font-size: 18px;
+        }
+
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        body {
+            background-color: #0f131f;
+            color: #dfe2f3;
+            overflow-x: hidden;
+        }
+
+        /* Abstract Grid Background with Pulse */
+        .bg-grid {
+            background-image: 
+                linear-gradient(to right, rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            animation: pulse-grid 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-grid {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
+        }
+
+        /* Ambient Glows */
+        .ambient-glow-primary {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,242,255,0.12) 0%, rgba(0,0,0,0) 70%);
+            top: -100px;
+            left: -100px;
+            z-index: -1;
+            filter: blur(60px);
+            pointer-events: none;
+            animation: pulse-glow 6s ease-in-out infinite alternate;
+        }
+        .ambient-glow-secondary {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(157,5,255,0.12) 0%, rgba(0,0,0,0) 70%);
+            bottom: -50px;
+            right: -50px;
+            z-index: -1;
+            filter: blur(60px);
+            pointer-events: none;
+            animation: pulse-glow 5s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Holographic Card Effect */
+        .holographic-card {
+            background: rgba(15, 19, 31, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .holographic-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, #00f2ff, #9d05ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float 7s ease-in-out infinite 2s;
+        }
+        
+        /* HUD Lines */
+        .hud-line {
+            position: absolute;
+            background: #00f2ff;
+            opacity: 0.2;
+        }
+        .hud-line-h { height: 1px; width: 100%; }
+        .hud-line-v { width: 1px; height: 100%; }
+
+        /* Scanner line */
+        @keyframes scanline {
+            0% { transform: translateY(0%); }
+            50% { transform: translateY(100%); }
+            100% { transform: translateY(0%); }
+        }
+        .scanner-line {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(to bottom, rgba(0, 242, 255, 0), rgba(0, 242, 255, 1), rgba(0, 242, 255, 0));
+            box-shadow: 0 0 20px 4px rgba(0, 242, 255, 0.5);
+            animation: scanline 3s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+            display: none;
+        }
+        .scanning .scanner-line {
+            display: block;
+        }
+        .scanning::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 242, 255, 0.05);
+            z-index: 5;
+        }
+
+        /* Progress Ring SVG Animation */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* Active highlight for diagnosis cards */
+        .diagnosis-card-active {
+            border-color: #00f2ff !important;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            background: rgba(0, 242, 255, 0.05) !important;
+        }
+        .diagnosis-card-active-danger {
+            border-color: #ffb4ab !important;
+            box-shadow: 0 0 20px rgba(255, 180, 171, 0.2);
+            background: rgba(255, 180, 171, 0.05) !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f131f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #313442;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #849495;
+        }
+
+        /* SVG Brain & Tumor Styles */
+        #brain-svg {
+            transition: all 0.5s ease-in-out;
+        }
+        
+        .tumor-hotspot {
+            transition: opacity 0.8s ease-in-out;
+            pointer-events: none;
+        }
+        
+        .active-tumor {
+            opacity: 1 !important;
+        }
+        
+        /* Tumor Hotspots Pulses */
+        .tumor-glioma-spot.active-tumor {
+            animation: pulse-tumor-s 2s infinite ease-in-out;
+        }
+        .tumor-meningioma-spot.active-tumor {
+            animation: pulse-tumor-s 2s infinite ease-in-out;
+        }
+        .tumor-pituitary-spot.active-tumor {
+            animation: pulse-tumor-s 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-tumor-s {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 180, 171, 0.4)); opacity: 0.8; }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 180, 171, 0.95)); opacity: 1; }
+        }
+
+        /* Dimming standard slices when tumor is active */
+        .has-tumor #slice-1,
+        .has-tumor #slice-2,
+        .has-tumor #slice-3,
+        .has-tumor #slice-4,
+        .has-tumor #slice-5 {
+            opacity: 0.3;
+        }
+        /* Highlight slice containing the active tumor */
+        .has-tumor-glioma #slice-2,
+        .has-tumor-glioma #slice-3 {
+            opacity: 0.95;
+        }
+        .has-tumor-meningioma #slice-3 {
+            opacity: 0.95;
+        }
+        .has-tumor-pituitary #slice-4 {
+            opacity: 0.95;
+        }
+        
+        /* Default Slice Transforms (3D Perspective tilted stack) */
+        #slice-1 { transform: translate(250px, 95px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); }
+        #slice-2 { transform: translate(250px, 147px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); }
+        #slice-3 { transform: translate(250px, 200px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); }
+        #slice-4 { transform: translate(250px, 253px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); }
+        #slice-5 { transform: translate(250px, 305px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); }
+        
+        #slice-1, #slice-2, #slice-3, #slice-4, #slice-5 {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+        
+        /* Hover Expansion Effect - Slices move apart vertically */
+        #brain-svg:hover #slice-1 { transform: translate(250px, 60px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); opacity: 0.7; }
+        #brain-svg:hover #slice-2 { transform: translate(250px, 130px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); opacity: 0.9; }
+        #brain-svg:hover #slice-3 { transform: translate(250px, 200px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); opacity: 1.0; }
+        #brain-svg:hover #slice-4 { transform: translate(250px, 270px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); opacity: 0.95; }
+        #brain-svg:hover #slice-5 { transform: translate(250px, 340px) rotate(-15deg) skewX(25deg) scale(1.3, 0.65); opacity: 0.8; }
+
+        /* ===== GLOBAL SECTION FONT SIZE BOOST ===== */
+
+        /* Section h2 headers (Analytics, Clinical Education, etc.) */
+        section h2 {
+            font-size: 3rem !important;
+            line-height: 3.6rem !important;
+        }
+
+        /* Section h3 sub-headers (Confusion Matrix, Training Loss, etc.) */
+        section h3 {
+            font-size: 1.8rem !important;
+            line-height: 2.4rem !important;
+            margin-bottom: 1rem;
+        }
+
+        /* Clinical Education - card body paragraphs */
+        #sec-education .glass-panel p {
+            font-size: 1.05rem !important;
+            line-height: 1.75rem !important;
+        }
+
+        /* Clinical Education - symptom/indicator labels */
+        #sec-education .glass-panel span.font-label-mono {
+            font-size: 0.95rem !important;
+        }
+
+        /* Clinical Education - card title h3 */
+        #sec-education h3 {
+            font-size: 2rem !important;
+            line-height: 2.6rem !important;
+            margin-bottom: 0.6rem;
+        }
+
+        /* Analytics - table text */
+        #sec-analytics table {
+            font-size: 1rem !important;
+        }
+        #sec-analytics table th,
+        #sec-analytics table td {
+            font-size: 1rem !important;
+            padding: 0.75rem !important;
+        }
+
+        /* Analytics - epoch labels */
+        #sec-analytics .font-label-mono {
+            font-size: 0.9rem !important;
+        }
+
+        /* Workspace - AI Insights panel heading */
+        #sec-workspace h2 {
+            font-size: 1.75rem !important;
+            line-height: 2.4rem !important;
+        }
+
+        /* Workspace - telemetry list labels */
+        #sec-workspace .space-y-4 span.font-label-mono {
+            font-size: 1rem !important;
+        }
+        #sec-workspace .space-y-4 span.font-data-metric {
+            font-size: 1.15rem !important;
+        }
+
+        /* Workspace - clinical summary text */
+        #clinical-summary {
+            font-size: 1rem !important;
+            line-height: 1.7rem !important;
+        }
+        #sec-workspace span.font-label-mono.text-secondary {
+            font-size: 1rem !important;
+        }
+
+        /* Workspace - confidence label inside gauge */
+        #sec-workspace .font-label-mono {
+            font-size: 0.9rem !important;
+        }
+
+        /* Workspace - upload prompt text */
+        #upload-prompt span.font-label-mono {
+            font-size: 1rem !important;
+        }
+
+        /* Workspace - demo buttons */
+        #upload-prompt button.font-label-mono {
+            font-size: 0.9rem !important;
+            padding: 0.4rem 0.8rem !important;
+        }
+
+        /* Workspace - diagnosis cards (Glioma / Meningioma etc) */
+        .holo-card span.font-label-mono {
+            font-size: 1rem !important;
+        }
+
+        /* Footer text */
+        footer .font-label-mono {
+            font-size: 1rem !important;
+        }
+        footer a.font-label-mono {
+            font-size: 1rem !important;
+        }
+        footer .font-display-lg {
+            font-size: 1.8rem !important;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative font-body-md text-body-md bg-background text-on-background">
+    <div id="flask-data" class="hidden"
+         data-result="{% if result %}{{ result }}{% endif %}"
+         data-confidence="{% if confidence %}{{ confidence }}{% endif %}"
+         data-file-path="{% if file_path %}{{ file_path }}{% endif %}">
+    </div>
+    <div class="bg-grid"></div>
+    <div class="ambient-glow-primary"></div>
+    <div class="ambient-glow-secondary"></div>
+
+    <!-- TopNavBar (Desktop) -->
+    <nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,242,255,0.1)] transition-all duration-300 ease-in-out hidden md:flex justify-between items-center px-margin-desktop h-20">
+        <div class="flex items-center gap-8">
+            <span class="font-display-lg text-[28px] font-bold text-primary drop-shadow-[0_0_10px_rgba(0,242,255,0.8)] cursor-pointer" onclick="switchTab('dashboard')">NeuroIntel</span>
+            <div class="flex gap-6 items-center pt-2">
+                <button id="nav-dashboard" class="font-label-mono text-label-mono text-primary border-b-2 border-primary pb-1 focus:outline-none" onclick="switchTab('dashboard')">Dashboard</button>
+                <button id="nav-workspace" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('workspace')">Analysis Workspace</button>
+                <button id="nav-analytics" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('analytics')">Model Analytics</button>
+                <button id="nav-education" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('education')">Clinical Education</button>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <!-- Search placeholder -->
+            <div class="relative w-48 lg:w-64">
+                <input class="w-full bg-surface-container-high border-b border-white/10 text-on-surface font-label-mono text-label-mono px-4 py-1.5 focus:outline-none focus:border-primary-container focus:shadow-[0_4px_15px_rgba(0,242,255,0.2)] transition-all bg-transparent rounded h-8" placeholder="Search..." type="text"/>
+                <span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm animate-pulse" style="font-size: 16px;">search</span>
+            </div>
+            
+            <!-- Uptime/Status info -->
+            <div class="flex items-center gap-4 border-r border-white/10 pr-6">
+                <div class="flex items-center gap-2">
+                    <span class="font-label-mono text-[9px] text-on-surface-variant uppercase">Uptime</span>
+                    <span class="font-label-mono text-[11px] text-primary" id="system-uptime">00:00:00</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-label-mono text-[9px] text-on-surface-variant uppercase">AI Engine</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00f2ff]"></span>
+                </div>
+            </div>
+
+            <!-- Profile / Settings -->
+            <div class="flex items-center gap-2">
+                <button class="text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">account_circle</span>
+                </button>
+                <button class="text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile NavBar Header -->
+    <nav class="fixed top-0 w-full z-45 bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,242,255,0.1)] transition-all duration-300 ease-in-out flex justify-between items-center px-4 h-16 md:hidden">
+        <span class="font-display-lg text-[22px] font-bold text-primary drop-shadow-[0_0_8px_rgba(0,242,255,0.8)] cursor-pointer" onclick="switchTab('dashboard')">NeuroIntel</span>
+        <button id="mobile-hamburger" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded focus:outline-none flex items-center justify-center" onclick="openDrawer()">
+            <span class="material-symbols-outlined text-[24px]">menu</span>
+        </button>
+    </nav>
+
+    <!-- Mobile Drawer Navigation -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 bg-background/95 backdrop-blur-lg transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-20 px-6 pb-8">
+        <!-- Close Button -->
+        <button class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors p-2 rounded focus:outline-none flex items-center justify-center" onclick="closeDrawer()">
+            <span class="material-symbols-outlined text-[28px]">close</span>
+        </button>
+        
+        <!-- Drawer Links -->
+        <div class="flex flex-col gap-6 mt-8">
+            <button id="mobile-nav-dashboard" class="font-label-mono text-[20px] text-left text-primary border-b-2 border-primary pb-2 focus:outline-none" onclick="switchTab('dashboard'); closeDrawer();">Dashboard</button>
+            <button id="mobile-nav-workspace" class="font-label-mono text-[20px] text-left text-on-surface-variant hover:text-primary pb-2 border-b border-white/5 focus:outline-none" onclick="switchTab('workspace'); closeDrawer();">Analysis Workspace</button>
+            <button id="mobile-nav-analytics" class="font-label-mono text-[20px] text-left text-on-surface-variant hover:text-primary pb-2 border-b border-white/5 focus:outline-none" onclick="switchTab('analytics'); closeDrawer();">Model Analytics</button>
+            <button id="mobile-nav-education" class="font-label-mono text-[20px] text-left text-on-surface-variant hover:text-primary pb-2 border-b border-white/5 focus:outline-none" onclick="switchTab('education'); closeDrawer();">Clinical Education</button>
+        </div>
+        
+        <!-- Drawer Info -->
+        <div class="mt-auto flex flex-col gap-4 border-t border-white/10 pt-6">
+            <div class="flex justify-between items-center">
+                <span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Uptime</span>
+                <span class="font-label-mono text-[12px] text-primary" id="mobile-system-uptime">00:00:00</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="font-label-mono text-[10px] text-on-surface-variant uppercase">AI Engine Status</span>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00f2ff]"></span>
+                    <span class="font-label-mono text-[11px] text-primary">ONLINE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Container -->
+    <main class="flex-grow pt-24 md:pt-32 px-margin-mobile md:px-margin-desktop pb-24 relative z-10 flex flex-col items-center">
+        
+        <!-- SECTION 1: DASHBOARD LANDING -->
+        <section id="sec-dashboard" class="w-full max-w-container-max grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+            <!-- Left Side Details -->
+            <div class="md:col-span-5 flex flex-col justify-center space-y-6">
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary-container/30 bg-primary-container/10 font-label-mono text-label-mono text-primary-container">
+                        <span class="w-2 h-2 rounded-full bg-primary-container animate-ping"></span>
+                        AI Diagnostic Engine Online
+                    </div>
+                    <h1 class="font-display-lg text-display-lg font-bold text-on-surface leading-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                        Deep Learning Assisted<br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Brain MRI</span><br/>
+                        Diagnostic Intelligence
+                    </h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+                        Advanced neural network analysis for real-time identification and classification of Glioma, Meningioma, and Pituitary tumors. High-precision diagnostics for clinical workflows and research.
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                    <button onclick="switchTab('workspace')" class="relative group px-6 py-3 rounded bg-primary text-on-primary font-label-mono text-label-mono font-bold flex items-center justify-center gap-2 overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98]">
+                        <span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                        Upload MRI Scan
+                    </button>
+                    <button onclick="switchTab('analytics')" class="relative group px-6 py-3 rounded holographic-card text-on-surface font-label-mono text-label-mono font-bold flex items-center justify-center gap-2 transition-all hover:bg-surface-variant/50 hover:scale-[1.02] active:scale-[0.98]">
+                        <span class="material-symbols-outlined text-secondary" data-icon="monitoring">monitoring</span>
+                        View Model Performance
+                    </button>
+                </div>
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/5 mt-8">
+                    <div>
+                        <div class="font-data-metric text-data-metric text-primary">86.5%</div>
+                        <div class="font-label-mono text-label-mono text-on-surface-variant text-[10px]">TEST ACCURACY</div>
+                    </div>
+                    <div>
+                        <div class="font-data-metric text-data-metric text-secondary">82ms</div>
+                        <div class="font-label-mono text-label-mono text-on-surface-variant text-[10px]">PROCESSING TIME</div>
+                    </div>
+                    <div>
+                        <div class="font-data-metric text-data-metric text-on-surface">3K+</div>
+                        <div class="font-label-mono text-label-mono text-on-surface-variant text-[10px]">SCANS MAPPED</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Hologram -->
+            <div class="md:col-span-7 relative flex items-center justify-center h-[450px] md:h-[550px] mt-8 md:mt-0">
+                <div class="relative w-full h-full max-w-[450px] animate-float flex items-center justify-center">
+                    <!-- Holographic Brain SVG Map -->
+                    <div class="absolute inset-0 z-20 rounded-full flex items-center justify-center bg-radial-gradient">
+                        <svg id="brain-svg" class="w-full h-full max-w-[380px] max-h-[380px]" viewBox="0 0 500 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Definitions for Filters, Gradients and Glows -->
+                            <defs>
+                                <filter id="cyan-glow" x="-30%" y="-30%" width="160%" height="160%">
+                                    <feGaussianBlur stdDeviation="6" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                                <filter id="purple-glow" x="-30%" y="-30%" width="160%" height="160%">
+                                    <feGaussianBlur stdDeviation="6" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                                <filter id="tumor-glow" x="-40%" y="-40%" width="180%" height="180%">
+                                    <feGaussianBlur stdDeviation="10" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                                <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00f2ff" stop-opacity="0.65"/>
+                                    <stop offset="100%" stop-color="#006a71" stop-opacity="0.15"/>
+                                </linearGradient>
+                                <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#9d05ff" stop-opacity="0.65"/>
+                                    <stop offset="100%" stop-color="#4b007e" stop-opacity="0.15"/>
+                                </linearGradient>
+                                <linearGradient id="grad-tumor" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffb4ab" stop-opacity="0.95"/>
+                                    <stop offset="100%" stop-color="#93000a" stop-opacity="0.5"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Blueprint Coordinate Grid Lines (Static Blueprint Aesthetic) -->
+                            <g stroke="#00f2ff" stroke-width="0.5" opacity="0.1">
+                                <line x1="50" y1="225" x2="450" y2="225" />
+                                <line x1="250" y1="50" x2="250" y2="400" />
+                                <circle cx="250" cy="225" r="180" fill="none" />
+                                <circle cx="250" cy="225" r="120" fill="none" stroke-dasharray="4,4" />
+                            </g>
+
+                            <!-- Vertical Scanner / Laser Alignment Guide Lines -->
+                            <g stroke="#00f2ff" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.2">
+                                <line x1="250" y1="55" x2="250" y2="395" /> <!-- Center Spine -->
+                                <line x1="165" y1="90" x2="165" y2="350" /> <!-- Front Left -->
+                                <line x1="335" y1="90" x2="335" y2="350" /> <!-- Back Right -->
+                            </g>
+
+                            <!-- ================= 3D SLICES STACK ================= -->
+
+                            <!-- SLICE 1: Vertex / Top Lobe -->
+                            <g id="slice-1" class="transition-all duration-700 ease-out" transform="translate(250, 95) rotate(-15) skewX(25) scale(1.3, 0.65)" opacity="0.5">
+                                <path d="M 0 -50 C 25 -50, 45 -30, 45 0 C 45 30, 25 50, 0 50 C -25 50, -45 30, -45 0 C -45 -30, -25 -50, 0 -50 Z" fill="url(#grad-cyan)" fill-opacity="0.05" stroke="#00f2ff" stroke-width="1.5" filter="url(#cyan-glow)" />
+                                <line x1="0" y1="-50" x2="0" y2="50" stroke="#00f2ff" stroke-width="1" opacity="0.4" />
+                                <circle cx="0" cy="0" r="3" fill="#00f2ff" />
+                            </g>
+
+                            <!-- SLICE 2: Upper Cerebrum -->
+                            <g id="slice-2" class="transition-all duration-700 ease-out" transform="translate(250, 147) rotate(-15) skewX(25) scale(1.3, 0.65)" opacity="0.75">
+                                <path d="M 0 -80 C 45 -80, 75 -50, 75 0 C 75 50, 45 80, 0 80 C -45 80, -75 50, -75 0 C -75 -50, -45 -80, 0 -80 Z" fill="url(#grad-cyan)" fill-opacity="0.05" stroke="#00f2ff" stroke-width="1.8" filter="url(#cyan-glow)" />
+                                <line x1="0" y1="-80" x2="0" y2="80" stroke="#00f2ff" stroke-width="1" opacity="0.5" />
+                                <path d="M -30 -30 Q -15 -45, 0 -30" stroke="#00f2ff" stroke-width="1.2" opacity="0.5" fill="none" />
+                                <path d="M 30 -30 Q 15 -45, 0 -30" stroke="#00f2ff" stroke-width="1.2" opacity="0.5" fill="none" />
+                                <circle cx="-40" cy="-10" r="3" fill="#00f2ff" />
+                                <circle cx="40" cy="-10" r="3" fill="#00f2ff" />
+                                
+                                <!-- Glioma Tumor Hotspot -->
+                                <g class="tumor-hotspot tumor-glioma-spot opacity-0">
+                                    <circle cx="-25" cy="-25" r="20" fill="url(#grad-tumor)" fill-opacity="0.3" stroke="#ffb4ab" stroke-width="2" filter="url(#tumor-glow)" />
+                                    <circle cx="-25" cy="-25" r="5" fill="#ffb4ab" />
+                                </g>
+                            </g>
+
+                            <!-- SLICE 3: Mid Cerebrum -->
+                            <g id="slice-3" class="transition-all duration-700 ease-out" transform="translate(250, 200) rotate(-15) skewX(25) scale(1.3, 0.65)">
+                                <path d="M 0 -95 C 55 -95, 90 -60, 90 0 C 90 60, 55 95, 0 95 C -55 95, -90 60, -90 0 C -90 -60, -55 -95, 0 -95 Z" fill="url(#grad-cyan)" fill-opacity="0.05" stroke="#00f2ff" stroke-width="2.2" filter="url(#cyan-glow)" />
+                                <line x1="0" y1="-95" x2="0" y2="95" stroke="#00f2ff" stroke-width="1.5" opacity="0.6" />
+                                <path d="M -20 -15 C -25 0, -10 20, 0 10 C -10 20, -25 0, -20 -15 Z" fill="none" stroke="#00f2ff" stroke-width="1.5" opacity="0.6" />
+                                <path d="M 20 -15 C 25 0, 10 20, 0 10 C 10 20, 25 0, 20 -15 Z" fill="none" stroke="#00f2ff" stroke-width="1.5" opacity="0.6" />
+                                <path d="M -50 -40 Q -25 -55, 0 -40" stroke="#00f2ff" stroke-width="1.2" opacity="0.5" fill="none" />
+                                <path d="M 50 -40 Q 25 -55, 0 -40" stroke="#00f2ff" stroke-width="1.2" opacity="0.5" fill="none" />
+                                <circle cx="-55" cy="20" r="3.5" fill="#00f2ff" />
+                                <circle cx="55" cy="20" r="3.5" fill="#00f2ff" />
+
+                                <!-- Glioma Tumor Hotspot -->
+                                <g class="tumor-hotspot tumor-glioma-spot opacity-0">
+                                    <circle cx="-30" cy="-35" r="25" fill="url(#grad-tumor)" fill-opacity="0.3" stroke="#ffb4ab" stroke-width="2" filter="url(#tumor-glow)" />
+                                    <circle cx="-30" cy="-35" r="6" fill="#ffb4ab" />
+                                </g>
+                                
+                                <!-- Meningioma Tumor Hotspot -->
+                                <g class="tumor-hotspot tumor-meningioma-spot opacity-0">
+                                    <path d="M 65 -50 C 82 -25, 82 25, 65 50 C 75 35, 75 -35, 65 -50 Z" fill="url(#grad-tumor)" fill-opacity="0.45" stroke="#ffb4ab" stroke-width="2" filter="url(#tumor-glow)" />
+                                    <circle cx="72" cy="0" r="6" fill="#ffb4ab" />
+                                </g>
+                            </g>
+
+                            <!-- SLICE 4: Lower Cerebrum & Cerebellum -->
+                            <g id="slice-4" class="transition-all duration-700 ease-out" transform="translate(250, 253) rotate(-15) skewX(25) scale(1.3, 0.65)" opacity="0.85">
+                                <path d="M 0 -90 C 50 -90, 85 -60, 85 -10 C 85 20, 50 30, 0 30 C -50 30, -85 20, -85 -10 C -85 -60, -50 -90, 0 -90 Z" fill="url(#grad-cyan)" fill-opacity="0.05" stroke="#00f2ff" stroke-width="1.8" filter="url(#cyan-glow)" />
+                                <path d="M 0 20 C 40 20, 60 40, 60 70 C 60 90, 30 95, 0 95 C -30 95, -60 90, -60 70 C -60 40, -40 20, 0 20 Z" fill="url(#grad-purple)" fill-opacity="0.05" stroke="#9d05ff" stroke-width="1.8" filter="url(#purple-glow)" />
+                                <line x1="0" y1="-90" x2="0" y2="95" stroke="#00f2ff" stroke-width="1" opacity="0.5" />
+                                <path d="M -30 55 Q 0 45, 30 55" stroke="#9d05ff" stroke-width="1.2" opacity="0.6" fill="none" />
+                                <path d="M -40 70 Q 0 60, 40 70" stroke="#9d05ff" stroke-width="1.2" opacity="0.6" fill="none" />
+                                <circle cx="0" cy="-60" r="3" fill="#00f2ff" />
+
+                                <!-- Pituitary Tumor Hotspot -->
+                                <g class="tumor-hotspot tumor-pituitary-spot opacity-0">
+                                    <circle cx="0" cy="-30" r="18" fill="url(#grad-tumor)" fill-opacity="0.3" stroke="#ffb4ab" stroke-width="2" filter="url(#tumor-glow)" />
+                                    <circle cx="0" cy="-30" r="5" fill="#ffb4ab" />
+                                </g>
+                            </g>
+
+                            <!-- SLICE 5: Brainstem & Temporal Base -->
+                            <g id="slice-5" class="transition-all duration-700 ease-out" transform="translate(250, 305) rotate(-15) skewX(25) scale(1.3, 0.65)" opacity="0.6">
+                                <path d="M -45 -25 C -25 -25, -15 -10, -20 20 C -25 35, -40 35, -50 20 C -60 5, -55 -25, -45 -25 Z" fill="url(#grad-cyan)" fill-opacity="0.05" stroke="#00f2ff" stroke-width="1.5" filter="url(#cyan-glow)" />
+                                <path d="M 45 -25 C 55 -25, 60 5, 50 20 C 40 35, 25 35, 20 20 C 15 -10, 25 -25, 45 -25 Z" fill="url(#grad-cyan)" fill-opacity="0.05" stroke="#00f2ff" stroke-width="1.5" filter="url(#cyan-glow)" />
+                                <path d="M 0 0 C 12 0, 18 15, 18 45 L -18 45 C -18 15, -12 0, 0 0 Z" fill="url(#grad-purple)" fill-opacity="0.05" stroke="#9d05ff" stroke-width="1.5" filter="url(#purple-glow)" />
+                                <line x1="0" y1="0" x2="0" y2="45" stroke="#9d05ff" stroke-width="1" opacity="0.5" />
+                                <circle cx="-45" cy="0" r="2.5" fill="#00f2ff" />
+                                <circle cx="45" cy="0" r="2.5" fill="#00f2ff" />
+                            </g>
+                        </svg>
+                    </div>
+                    <!-- Ambient HUD details -->
+                    <div class="absolute top-[10%] left-[5%] font-label-mono text-label-mono text-primary-container/40 z-30">
+                        SYS.RECONSTRUCTION: 3D_AXIAL_STACK<br/>
+                        FREQ: 5.8 GHz
+                    </div>
+                    <div class="absolute bottom-[10%] right-[5%] font-label-mono text-label-mono text-secondary-container/40 text-right z-30">
+                        DIMENSIONS: 128x128x3<br/>
+                        RENDER: HOLOGRAPHIC_SVG
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: WORKSPACE -->
+        <section id="sec-workspace" class="w-full max-w-container-max grid grid-cols-1 md:grid-cols-12 gap-gutter hidden">
+            <!-- Center/Main: MRI Viewer & Upload -->
+            <div class="md:col-span-8 flex flex-col gap-gutter">
+                <!-- Viewer / Dropzone Card -->
+                <form id="mri-upload-form" method="POST" enctype="multipart/form-data" class="m-0">
+                    <div id="dropzone" class="glass-panel rounded-xl overflow-hidden relative min-h-[480px] flex flex-col items-center justify-center border-dashed border-2 border-outline-variant hover:border-primary transition-all cursor-pointer group">
+                        
+                        <!-- Uploading Loader Overlay -->
+                        <div id="scanning-overlay" class="absolute inset-0 bg-surface/90 backdrop-blur-md z-30 hidden flex-col items-center justify-center">
+                            <div class="w-16 h-16 border-4 border-primary-container border-t-transparent rounded-full animate-spin mb-4"></div>
+                            <h4 class="font-headline-lg-mobile text-primary text-glow-cyan mb-1">RUNNING AI CLASSIFIER</h4>
+                            <p class="font-label-mono text-label-mono text-on-surface-variant">Analyzing cortical voxel slices...</p>
+                        </div>
+
+                        <!-- Initial Drag & Drop Prompt -->
+                        <div id="upload-prompt" class="absolute inset-0 flex flex-col items-center justify-center bg-surface-container/30 backdrop-blur-sm z-20 group-hover:bg-surface-container/20 transition-colors">
+                            <input type="file" id="file-input" name="file" accept="image/*" class="hidden" required>
+                            <div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center mb-4 text-primary group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined" style="font-size: 32px;">cloud_upload</span>
+                            </div>
+                            <span class="font-data-metric text-data-metric text-primary mb-1">Drag &amp; Drop MRI scan here</span>
+                            <span class="font-label-mono text-label-mono text-on-surface-variant">or click to browse local files</span>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary-fixed text-[10px] mt-2 px-2 py-0.5 rounded">JPG, PNG, WEBP Supported</span>
+                            
+                            <!-- Demo Loader Buttons -->
+                            <div class="mt-5 flex flex-wrap justify-center gap-2 z-30" onclick="event.stopPropagation()">
+                                <button type="button" onclick="loadDemo(event, 'Te-gl_0015.jpg')" class="px-2.5 py-1 bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded font-label-mono text-[10px] text-primary transition-all">
+                                    Load Glioma Demo
+                                </button>
+                                <button type="button" onclick="loadDemo(event, 'Te-meTr_0001.jpg')" class="px-2.5 py-1 bg-secondary/10 hover:bg-secondary/20 border border-secondary/20 rounded font-label-mono text-[10px] text-secondary transition-all">
+                                    Load Meningioma Demo
+                                </button>
+                                <button type="button" onclick="loadDemo(event, 'Te-piTr_0003.jpg')" class="px-2.5 py-1 bg-surface-tint/10 hover:bg-surface-tint/20 border border-surface-tint/20 rounded font-label-mono text-[10px] text-surface-tint transition-all">
+                                    Load Pituitary Demo
+                                </button>
+                                <button type="button" onclick="loadDemo(event, 'Te-noTr_0004.jpg')" class="px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded font-label-mono text-[10px] text-on-surface-variant transition-all">
+                                    Load Healthy Demo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Preview Container -->
+                        <div id="preview-wrapper" class="absolute inset-0 z-10 hidden">
+                            <div class="w-full h-full bg-surface-container-highest relative flex items-center justify-center">
+                                <img id="mri-image-preview" src="#" alt="MRI Preview" class="max-w-full max-h-full object-contain">
+                                <div class="scanner-line"></div>
+                            </div>
+                            <!-- Viewer HUD controls -->
+                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-surface-container-highest/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-[0_0_15px_rgba(0,242,255,0.1)]">
+                                <button type="button" class="text-on-surface-variant hover:text-primary p-1 flex"><span class="material-symbols-outlined text-[18px]">zoom_in</span></button>
+                                <button type="button" class="text-on-surface-variant hover:text-primary p-1 flex"><span class="material-symbols-outlined text-[18px]">zoom_out</span></button>
+                                <div class="w-[1px] h-4 bg-outline-variant mx-1"></div>
+                                <button type="button" class="text-on-surface-variant hover:text-primary p-1 flex" onclick="resetFile(event)"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="mt-4 flex gap-4">
+                        <button type="submit" id="classify-btn" class="w-full py-3 rounded bg-primary text-on-primary font-label-mono text-label-mono font-bold flex items-center justify-center gap-2 transition-all hover:scale-[1.01]" disabled>
+                            <span class="material-symbols-outlined" data-icon="settings_accessibility">settings_accessibility</span>
+                            Execute Diagnostics
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Target Diagnosis Output Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+                    <div id="card-glioma" class="holo-card rounded-lg p-4 flex flex-col items-center text-center border border-white/10 transition-all">
+                        <span class="material-symbols-outlined text-primary mb-2" style="font-size: 28px;">biotech</span>
+                        <span class="font-label-mono text-label-mono text-on-surface-variant mb-1">Glioma</span>
+                        <span id="txt-glioma" class="font-data-metric text-data-metric text-primary">0.0%</span>
+                        <div class="w-full bg-white/5 h-1 rounded-full mt-2 overflow-hidden">
+                            <div id="bar-glioma" class="bg-primary-container h-full w-0 transition-all duration-1000"></div>
+                        </div>
+                    </div>
+                    <div id="card-meningioma" class="holo-card rounded-lg p-4 flex flex-col items-center text-center border border-white/10 transition-all">
+                        <span class="material-symbols-outlined text-secondary mb-2" style="font-size: 28px;">psychology</span>
+                        <span class="font-label-mono text-label-mono text-on-surface-variant mb-1">Meningioma</span>
+                        <span id="txt-meningioma" class="font-data-metric text-data-metric text-secondary">0.0%</span>
+                        <div class="w-full bg-white/5 h-1 rounded-full mt-2 overflow-hidden">
+                            <div id="bar-meningioma" class="bg-secondary-container h-full w-0 transition-all duration-1000"></div>
+                        </div>
+                    </div>
+                    <div id="card-pituitary" class="holo-card rounded-lg p-4 flex flex-col items-center text-center border border-white/10 transition-all">
+                        <span class="material-symbols-outlined text-surface-tint mb-2" style="font-size: 28px;">neurology</span>
+                        <span class="font-label-mono text-label-mono text-on-surface-variant mb-1">Pituitary</span>
+                        <span id="txt-pituitary" class="font-data-metric text-data-metric text-surface-tint">0.0%</span>
+                        <div class="w-full bg-white/5 h-1 rounded-full mt-2 overflow-hidden">
+                            <div id="bar-pituitary" class="bg-primary-fixed-dim h-full w-0 transition-all duration-1000"></div>
+                        </div>
+                    </div>
+                    <div id="card-notumor" class="holo-card rounded-lg p-4 flex flex-col items-center text-center border border-white/10 transition-all">
+                        <span class="material-symbols-outlined text-neon-green mb-2" style="font-size: 28px;">check_circle</span>
+                        <span class="font-label-mono text-label-mono text-on-surface-variant mb-1">No Tumor</span>
+                        <span id="txt-notumor" class="font-data-metric text-data-metric text-on-surface-variant">0.0%</span>
+                        <div class="w-full bg-white/5 h-1 rounded-full mt-2 overflow-hidden">
+                            <div id="bar-notumor" class="bg-primary h-full w-0 transition-all duration-1000"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: AI Insights -->
+            <div class="md:col-span-4 flex flex-col gap-gutter">
+                <div class="glass-panel rounded-xl p-6 h-full flex flex-col">
+                    <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary-container">memory</span>
+                        AI Insights
+                    </h2>
+
+                    <!-- Circular Gauge -->
+                    <div class="flex flex-col items-center justify-center mb-8 relative">
+                        <div class="relative w-36 h-36 flex items-center justify-center rounded-full bg-surface-container-high">
+                            <svg class="absolute inset-0 w-full h-full transform" viewbox="0 0 100 100">
+                                <circle cx="50" cy="50" fill="none" r="44" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+                                <circle class="progress-ring__circle" id="ai-progress-ring" cx="50" cy="50" fill="none" r="44" stroke="#00f2ff" stroke-dasharray="276.46" stroke-dashoffset="276.46" stroke-width="4"></circle>
+                            </svg>
+                            <div class="flex flex-col items-center text-center z-10">
+                                <span class="font-label-mono text-[9px] text-on-surface-variant uppercase tracking-wider">Confidence</span>
+                                <span id="insights-percentage" class="font-data-metric text-data-metric text-primary leading-tight">Awaiting</span>
+                                <span id="insights-status" class="font-label-mono text-label-mono text-primary leading-tight">Input</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry Lists -->
+                    <div class="space-y-4 flex-1">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-label-mono text-on-surface-variant">Model Version</span>
+                            <span class="font-data-metric text-[16px] text-primary">MobileNetV2</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-label-mono text-on-surface-variant">Processing Time</span>
+                            <span class="font-data-metric text-[16px] text-on-surface">-- ms</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-label-mono text-on-surface-variant">Peak Probability</span>
+                            <span class="font-data-metric text-[16px] text-secondary">-- %</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-label-mono text-on-surface-variant">Reliability Factor</span>
+                            <span class="font-data-metric text-[16px] text-primary-container">0.988 / 1.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Summary -->
+                    <div class="p-4 bg-white/5 border border-white/10 rounded-lg mt-6">
+                        <span class="font-label-mono text-label-mono text-secondary mb-1 block">Clinical Diagnosis Summary</span>
+                        <p id="clinical-summary" class="text-on-surface-variant text-[16px] leading-relaxed">
+                            No MRI scan uploaded yet. Execute diagnostics to populate clinical insight evaluations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MODEL ANALYTICS -->
+        <section id="sec-analytics" class="w-full max-w-container-max hidden space-y-8">
+            <h2 class="font-headline-lg text-headline-lg text-primary text-center">Neural Network Performance Analytics</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                <!-- Confusion Matrix -->
+                <div class="md:col-span-6 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Confusion Matrix</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse text-[16px] font-label-mono">
+                            <thead>
+                                <tr class="border-b border-white/10 text-on-surface-variant">
+                                    <th class="p-2 text-left">True \ Pred</th>
+                                    <th class="p-2">Pituitary</th>
+                                    <th class="p-2">Glioma</th>
+                                    <th class="p-2">No Tumor</th>
+                                    <th class="p-2">Meningioma</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-on-surface">
+                                <tr>
+                                    <td class="p-3 text-left font-bold">Pituitary</td>
+                                    <td class="bg-primary-container/20 text-primary font-bold p-3">74</td>
+                                    <td class="p-3">0</td>
+                                    <td class="p-3">0</td>
+                                    <td class="p-3">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 text-left font-bold">Glioma</td>
+                                    <td class="p-3">2</td>
+                                    <td class="bg-primary-container/20 text-primary font-bold p-3">91</td>
+                                    <td class="p-3">4</td>
+                                    <td class="p-3">3</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 text-left font-bold">No Tumor</td>
+                                    <td class="p-3">0</td>
+                                    <td class="p-3">2</td>
+                                    <td class="bg-primary-container/20 text-primary font-bold p-3">103</td>
+                                    <td class="p-3">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 text-left font-bold">Meningioma</td>
+                                    <td class="p-3">1</td>
+                                    <td class="p-3">4</td>
+                                    <td class="p-3">0</td>
+                                    <td class="bg-primary-container/20 text-primary font-bold p-3">110</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Training Loss Curves -->
+                <div class="md:col-span-6 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Training Loss History</h3>
+                    <div class="w-full h-56 relative flex items-center justify-center">
+                        <svg width="100%" height="100%" viewBox="0 0 300 120" class="overflow-visible" preserveAspectRatio="none">
+                            <line x1="0" y1="20" x2="300" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+                            <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+                            <line x1="0" y1="80" x2="300" y2="80" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+                            <line x1="0" y1="110" x2="300" y2="110" stroke="rgba(255,255,255,0.05)" stroke-width="1"></line>
+                            <!-- Curve path -->
+                            <path d="M 0 110 Q 50 80 100 45 T 200 25 T 300 15" fill="none" stroke="#00f2ff" stroke-width="2"></path>
+                            <!-- Secondary curve -->
+                            <path d="M 0 110 Q 50 90 100 65 T 200 45 T 300 35" fill="none" stroke="#9d05ff" stroke-width="2" stroke-dasharray="4"></path>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between font-label-mono text-[14px] text-on-surface-variant mt-2 px-1">
+                        <span>Epoch 1</span>
+                        <span>Epoch 2</span>
+                        <span>Epoch 3</span>
+                        <span>Epoch 4</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CLINICAL EDUCATION -->
+        <section id="sec-education" class="w-full max-w-container-max hidden space-y-8">
+            <h2 class="font-headline-lg text-headline-lg text-primary text-center">Clinical Pathology Reference</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+                <div class="glass-panel p-5 rounded-xl hover:border-primary transition-all">
+                    <span class="material-symbols-outlined text-primary mb-3 text-3xl">biotech</span>
+                    <h3 class="font-headline-lg-mobile text-light mb-2">Glioma</h3>
+                    <p class="text-on-surface-variant text-[16px] leading-relaxed mb-4">
+                        Arising from glial cells within the CNS parenchyma. Highly infiltrative, making resection challenging.
+                    </p>
+                    <span class="font-label-mono text-[14px] text-secondary uppercase block mb-1">Symptoms</span>
+                    <p class="text-on-surface-variant text-[15px] mb-0">Cognitive deficit, focal seizures, early morning headaches.</p>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl hover:border-secondary transition-all">
+                    <span class="material-symbols-outlined text-secondary mb-3 text-3xl">psychology</span>
+                    <h3 class="font-headline-lg-mobile text-light mb-2">Meningioma</h3>
+                    <p class="text-on-surface-variant text-[16px] leading-relaxed mb-4">
+                        Typically benign extra-axial tumors originating from the arachnoid cap cells of the meningeal sheath.
+                    </p>
+                    <span class="font-label-mono text-[14px] text-secondary uppercase block mb-1">Symptoms</span>
+                    <p class="text-on-surface-variant text-[15px] mb-0">Progressive focal deficits, visual disturbances, localized pain.</p>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl hover:border-surface-tint transition-all">
+                    <span class="material-symbols-outlined text-surface-tint mb-3 text-3xl">neurology</span>
+                    <h3 class="font-headline-lg-mobile text-light mb-2">Pituitary</h3>
+                    <p class="text-on-surface-variant text-[16px] leading-relaxed mb-4">
+                        Adenomata located within the sella turcica, commonly causing visual chiasm compression and endocrine dysfunction.
+                    </p>
+                    <span class="font-label-mono text-[14px] text-secondary uppercase block mb-1">Symptoms</span>
+                    <p class="text-on-surface-variant text-[15px] mb-0">Bitemporal hemianopsia, hormone dysregulation, headaches.</p>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl hover:border-on-surface-variant transition-all">
+                    <span class="material-symbols-outlined text-on-surface-variant mb-3 text-3xl">check_circle</span>
+                    <h3 class="font-headline-lg-mobile text-light mb-2">Healthy</h3>
+                    <p class="text-on-surface-variant text-[16px] leading-relaxed mb-4">
+                        Uniform ventricular volume, symmetrical hemisphere structure, and absence of signal intensity anomalies.
+                    </p>
+                    <span class="font-label-mono text-[14px] text-secondary uppercase block mb-1">Indicators</span>
+                    <p class="text-on-surface-variant text-[15px] mb-0">Standard sulci profile, clean tissue contrast, clear ventricles.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full mt-auto bg-surface-container-lowest/80 backdrop-blur-lg border-t border-white/10 shadow-[0_-4px_20px_rgba(157,5,255,0.1)] flex flex-col items-center justify-center px-margin-desktop py-gutter gap-2 relative z-50">
+        <div class="font-label-mono text-label-mono text-on-surface-variant text-center text-[16px]">
+            © 2026 NeuroIntel Medical Systems. For research use only. Not for clinical diagnosis.
+        </div>
+    </footer>
+
+    <!-- JavaScript & Canvas 3D brain logic -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Hide all sections
+            document.getElementById('sec-dashboard').classList.add('hidden');
+            document.getElementById('sec-workspace').classList.add('hidden');
+            document.getElementById('sec-analytics').classList.add('hidden');
+            document.getElementById('sec-education').classList.add('hidden');
+
+            // Reset navigation links styling (Desktop)
+            const navIds = ['nav-dashboard', 'nav-workspace', 'nav-analytics', 'nav-education'];
+            navIds.forEach(id => {
+                const link = document.getElementById(id);
+                if (link) {
+                    link.className = "font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none";
+                }
+            });
+
+            // Reset navigation links styling (Mobile)
+            const mobileNavIds = ['mobile-nav-dashboard', 'mobile-nav-workspace', 'mobile-nav-analytics', 'mobile-nav-education'];
+            mobileNavIds.forEach(id => {
+                const link = document.getElementById(id);
+                if (link) {
+                    link.className = "font-label-mono text-[20px] text-left text-on-surface-variant hover:text-primary pb-2 border-b border-white/5 focus:outline-none";
+                }
+            });
+
+            // Show active section
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            
+            // Set active nav link style (Desktop)
+            const activeLink = document.getElementById(`nav-${tabId}`);
+            if (activeLink) {
+                activeLink.className = "font-label-mono text-label-mono text-primary border-b-2 border-primary pb-1 focus:outline-none";
+            }
+
+            // Set active nav link style (Mobile)
+            const activeMobileLink = document.getElementById(`mobile-nav-${tabId}`);
+            if (activeMobileLink) {
+                activeMobileLink.className = "font-label-mono text-[20px] text-left text-primary border-b-2 border-primary pb-2 focus:outline-none";
+            }
+        }
+
+        // Setup clock
+        let startTime = Date.now();
+        setInterval(() => {
+            let diff = Date.now() - startTime;
+            let secs = Math.floor((diff / 1000) % 60);
+            let mins = Math.floor((diff / (1000 * 60)) % 60);
+            let hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const timeStr = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            
+            const desktopClock = document.getElementById('system-uptime');
+            if (desktopClock) desktopClock.innerText = timeStr;
+            
+            const mobileClock = document.getElementById('mobile-system-uptime');
+            if (mobileClock) mobileClock.innerText = timeStr;
+        }, 1000);
+
+        // Mobile drawer handlers
+        function openDrawer() {
+            const drawer = document.getElementById('mobile-drawer');
+            if (drawer) drawer.classList.remove('translate-x-full');
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('mobile-drawer');
+            if (drawer) drawer.classList.add('translate-x-full');
+        }
+
+
+        // --- Holographic Brain SVG Initialization ---
+        // Note: The interactive highlighting is done on load if diagnosis data is present.
+        function initializeBrainSvg() {
+            const brainSvg = document.getElementById('brain-svg');
+            const detectionResult = "{% if result %}{{ result | lower }}{% else %}{% endif %}";
+            
+            if (brainSvg && detectionResult) {
+                // Clear any existing classes
+                brainSvg.classList.remove('has-tumor', 'has-tumor-glioma', 'has-tumor-meningioma', 'has-tumor-pituitary');
+                document.querySelectorAll('.tumor-hotspot').forEach(el => el.classList.remove('active-tumor'));
+                
+                if (detectionResult.includes("glioma")) {
+                    brainSvg.classList.add('has-tumor', 'has-tumor-glioma');
+                    document.querySelectorAll('.tumor-glioma-spot').forEach(el => el.classList.add('active-tumor'));
+                } else if (detectionResult.includes("meningioma")) {
+                    brainSvg.classList.add('has-tumor', 'has-tumor-meningioma');
+                    document.querySelectorAll('.tumor-meningioma-spot').forEach(el => el.classList.add('active-tumor'));
+                } else if (detectionResult.includes("pituitary")) {
+                    brainSvg.classList.add('has-tumor', 'has-tumor-pituitary');
+                    document.querySelectorAll('.tumor-pituitary-spot').forEach(el => el.classList.add('active-tumor'));
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded', initializeBrainSvg);
+
+        // --- File Upload Form Logic ---
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('file-input');
+        const previewWrapper = document.getElementById('preview-wrapper');
+        const mriImage = document.getElementById('mri-image-preview');
+        const promptContainer = document.getElementById('upload-prompt');
+        const classifyBtn = document.getElementById('classify-btn');
+        const form = document.getElementById('mri-upload-form');
+        const loader = document.getElementById('scanning-overlay');
+
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+            dropzone.style.borderColor = "#00f2ff";
+        });
+
+        ['dragleave', 'drop'].forEach(evName => {
+            dropzone.addEventListener(evName, () => {
+                dropzone.classList.remove('dragover');
+                dropzone.style.borderColor = "";
+            });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handlePreview();
+            }
+        });
+
+        fileInput.addEventListener('change', handlePreview);
+
+        function handlePreview() {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    mriImage.src = e.target.result;
+                    promptContainer.style.display = 'none';
+                    previewWrapper.style.display = 'block';
+                    classifyBtn.disabled = false;
+                    classifyBtn.style.boxShadow = "0 0 15px rgba(0, 242, 255, 0.4)";
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function resetFile(e) {
+            e.stopPropagation();
+            fileInput.value = '';
+            mriImage.src = '#';
+            promptContainer.style.display = 'flex';
+            previewWrapper.style.display = 'none';
+            classifyBtn.disabled = true;
+            classifyBtn.style.boxShadow = "";
+        }
+
+        function loadDemo(event, filename) {
+            if (event) event.stopPropagation();
+            
+            // Show custom loading overlay while fetching the blob
+            const loader = document.getElementById('scanning-overlay');
+            if (loader) {
+                loader.style.display = 'flex';
+                const h4 = loader.querySelector('h4');
+                const p = loader.querySelector('p');
+                if (h4) h4.innerText = "RETRIEVING DEMO SCAN";
+                if (p) p.innerText = `Fetching ${filename} from server...`;
+            }
+            
+            fetch(`/samples/${filename}`)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = new File([blob], filename, { type: 'image/jpeg' });
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    
+                    const fileInput = document.getElementById('file-input');
+                    fileInput.files = dt.files;
+                    
+                    // Trigger preview update
+                    handlePreview();
+                    
+                    if (loader) {
+                        loader.style.display = 'none';
+                        const h4 = loader.querySelector('h4');
+                        const p = loader.querySelector('p');
+                        if (h4) h4.innerText = "RUNNING AI CLASSIFIER";
+                        if (p) p.innerText = "Analyzing cortical voxel slices...";
+                    }
+                })
+                .catch(err => {
+                    console.error("Error loading demo image:", err);
+                    if (loader) loader.style.display = 'none';
+                    alert("Failed to load demo image from server.");
+                });
+        }
+
+        form.addEventListener('submit', () => {
+            loader.style.display = 'flex';
+            previewWrapper.classList.add('scanning');
+            classifyBtn.disabled = true;
+        });
+
+        // --- Result Animations and Weights Rendering ---
+        const flaskDataEl = document.getElementById('flask-data');
+        const flaskResult = flaskDataEl ? (flaskDataEl.getAttribute('data-result') || null) : null;
+        const flaskConfidence = flaskDataEl ? (flaskDataEl.getAttribute('data-confidence') || null) : null;
+        const flaskFilePath = flaskDataEl ? (flaskDataEl.getAttribute('data-file-path') || null) : null;
+
+        if (flaskResult) {
+            // Activate the Analysis Workspace Tab
+            switchTab('workspace');
+            
+            // Set uploaded image in preview
+            mriImage.src = flaskFilePath;
+            promptContainer.style.display = 'none';
+            previewWrapper.style.display = 'block';
+            classifyBtn.disabled = false;
+
+            const confidencePct = parseFloat(flaskConfidence);
+            const resultLabel = flaskResult.toLowerCase();
+
+            // Trigger SVG update
+            if (typeof initializeBrainSvg === 'function') {
+                initializeBrainSvg();
+            }
+
+            // Set AI Progress Ring
+            const progressRing = document.getElementById('ai-progress-ring');
+            const progressText = document.getElementById('insights-percentage');
+            const progressStatus = document.getElementById('insights-status');
+            const circumference = 276.46; // 2 * PI * 44
+
+            setTimeout(() => {
+                const offset = circumference - (confidencePct / 100) * circumference;
+                progressRing.style.strokeDashoffset = offset;
+                
+                // Count up text
+                let counter = 0;
+                const interval = setInterval(() => {
+                    if (counter >= confidencePct) {
+                        clearInterval(interval);
+                        progressText.innerText = confidencePct.toFixed(2) + "%";
+                    } else {
+                        counter += 0.5;
+                        progressText.innerText = Math.min(counter, confidencePct).toFixed(1) + "%";
+                    }
+                }, 8);
+
+                // Set status text in circle center
+                if (resultLabel.includes("notumor")) {
+                    progressStatus.innerText = "NORMAL";
+                    progressStatus.style.color = "#10b981";
+                    progressRing.style.stroke = "#10b981";
+                } else {
+                    progressStatus.innerText = "TUMOR";
+                    progressStatus.style.color = "#ffb4ab";
+                    progressRing.style.stroke = "#ffb4ab";
+                }
+            }, 300);
+
+            // Populate Diagnostic cards and telemetry
+            let weights = { glioma: 1.5, meningioma: 0.8, pituitary: 0.6, notumor: 2.1 };
+            
+            if (resultLabel.includes("glioma")) {
+                weights.glioma = confidencePct;
+                weights.meningioma = Math.max(0.2, 100.0 - confidencePct - 2.5);
+                document.getElementById('card-glioma').classList.add('diagnosis-card-active-danger');
+                document.getElementById('clinical-summary').innerText = 
+                    "AI Analysis indicates hyperintense cortical tissue anomalies in the cerebral hemisphere, highly consistent with Glioma (glial tissue origin). Secondary volumetric and contrast enhancement checks are strongly recommended.";
+            } else if (resultLabel.includes("meningioma")) {
+                weights.meningioma = confidencePct;
+                weights.glioma = Math.max(0.2, 100.0 - confidencePct - 1.8);
+                document.getElementById('card-meningioma').classList.add('diagnosis-card-active-danger');
+                document.getElementById('clinical-summary').innerText = 
+                    "Extra-axial cortical masses and dural tail signs identified, indicative of Meningioma (membrane-layer origin). Volumetric expansion rate analysis suggested.";
+            } else if (resultLabel.includes("pituitary")) {
+                weights.pituitary = confidencePct;
+                weights.notumor = Math.max(0.1, 100.0 - confidencePct - 0.9);
+                document.getElementById('card-pituitary').classList.add('diagnosis-card-active-danger');
+                document.getElementById('clinical-summary').innerText = 
+                    "Anomalies localized in the sella turcica, signifying a Pituitary Gland adenoma. Optic chiasm displacement evaluation is advised to identify structural pressure risks.";
+            } else {
+                weights.notumor = confidencePct;
+                weights.meningioma = Math.max(0.1, (100.0 - confidencePct) * 0.4);
+                weights.glioma = Math.max(0.1, (100.0 - confidencePct) * 0.6);
+                document.getElementById('card-notumor').classList.add('diagnosis-card-active');
+                document.getElementById('clinical-summary').innerText = 
+                    "Cerebral, cerebellar, and ventricular regions present symmetrical ventricles, sulcal integrity, and standard brain parenchyma. No mass effects or localized tumors detected.";
+            }
+
+            // Animate card bars and text weight values
+            Object.keys(weights).forEach(k => {
+                const w = weights[k];
+                setTimeout(() => {
+                    const bar = document.getElementById(`bar-${k}`);
+                    const txt = document.getElementById(`txt-${k}`);
+                    if (bar) bar.style.width = w + '%';
+                    if (txt) txt.innerText = w.toFixed(1) + "%";
+                }, 400);
+            });
+        }
+    </script>
+</body>
+</html>
