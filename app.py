@@ -20,7 +20,6 @@ from flask import (
 )
 from tensorflow.keras.models import load_model  # type: ignore
 from keras.preprocessing.image import load_img, img_to_array
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -30,6 +29,35 @@ from config import (
     UPLOAD_FOLDER, EXPORTS_FOLDER, SESSIONS_FOLDER,
     BENCHMARK_METRICS, MC_DROPOUT_ITERATIONS,
 )
+
+# ── Dynamic model metadata (written by train.py after each training run) ──────
+_META_PATH = os.path.join(os.path.dirname(__file__), "models", "model_metadata.json")
+
+def _load_model_meta() -> dict:
+    """Read model_metadata.json if present; fall back to legacy MobileNetV2 defaults."""
+    if os.path.exists(_META_PATH):
+        try:
+            with open(_META_PATH) as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"model_name": "MobileNetV2", "input_size": IMAGE_SIZE}
+
+def _resolve_preprocess_fn(model_name: str):
+    """Return the correct Keras preprocessing function for *model_name*."""
+    mn = (model_name or "").lower()
+    if "efficientnet" in mn:
+        from tensorflow.keras.applications.efficientnet import preprocess_input as pp
+    elif "resnet" in mn:
+        from tensorflow.keras.applications.resnet50 import preprocess_input as pp
+    else:  # default / MobileNetV2
+        from tensorflow.keras.applications.mobilenet_v2 import preprocess_input as pp
+    return pp
+
+_model_meta     = _load_model_meta()
+_MODEL_NAME     = _model_meta.get("model_name", "MobileNetV2")
+_INPUT_SIZE     = int(_model_meta.get("input_size",  IMAGE_SIZE))
+preprocess_input = _resolve_preprocess_fn(_MODEL_NAME)
 
 # ── Backend modules ───────────────────────────────────────────────────────────
 from backend.quality.mri_quality         import assess_quality
@@ -392,10 +420,11 @@ def api_benchmark():
 @app.route("/api/health", methods=["GET"])
 def api_health():
     return jsonify({
-        "status": "online",
-        "model":  "MobileNetV2",
-        "version": "NeuroIntel 3.0",
-        "timestamp": datetime.now().isoformat(),
+        "status":     "online",
+        "model":      _MODEL_NAME,
+        "input_size": _INPUT_SIZE,
+        "version":    "NeuroIntel 3.0",
+        "timestamp":  datetime.now().isoformat(),
     })
 
 
@@ -404,8 +433,8 @@ def api_health():
 # ═════════════════════════════════════════════════════════════════════════════
 
 def _predict_tumor(image_path: str):
-    """Original prediction function — preserved from main.py."""
-    img      = load_img(image_path, target_size=(IMAGE_SIZE, IMAGE_SIZE))
+    """Original prediction function — uses dynamic input size from metadata."""
+    img      = load_img(image_path, target_size=(_INPUT_SIZE, _INPUT_SIZE))
     arr      = img_to_array(img)
     arr      = preprocess_input(arr)
     arr      = np.expand_dims(arr, axis=0)
@@ -418,8 +447,8 @@ def _predict_tumor(image_path: str):
 
 
 def _prepare_image(image_path: str):
-    """Load + preprocess image for model inference."""
-    img     = load_img(image_path, target_size=(IMAGE_SIZE, IMAGE_SIZE))
+    """Load + preprocess image for model inference — uses dynamic input size."""
+    img     = load_img(image_path, target_size=(_INPUT_SIZE, _INPUT_SIZE))
     arr     = img_to_array(img)
     pp      = preprocess_input(arr.copy())
     return arr, np.expand_dims(pp, axis=0)
