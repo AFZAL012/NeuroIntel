@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;family=Montserrat:wght@100..900&amp;display=swap" rel="stylesheet"/>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Tailwind Config -->
     <script id="tailwind-config">
       tailwind.config = {
@@ -89,12 +91,12 @@
                     "data-metric": ["Geist"]
             },
             "fontSize": {
-                    "display-lg": ["52px", {"lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "body-md": ["20px", {"lineHeight": "30px", "fontWeight": "400"}],
-                    "headline-lg-mobile": ["32px", {"lineHeight": "42px", "fontWeight": "600"}],
-                    "headline-lg": ["42px", {"lineHeight": "52px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                    "label-mono": ["15px", {"lineHeight": "22px", "letterSpacing": "0.05em", "fontWeight": "500"}],
-                    "data-metric": ["26px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    "display-lg": ["62px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["22px", {"lineHeight": "34px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["38px", {"lineHeight": "48px", "fontWeight": "600"}],
+                    "headline-lg": ["48px", {"lineHeight": "58px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-mono": ["17px", {"lineHeight": "25px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "data-metric": ["30px", {"lineHeight": "40px", "fontWeight": "600"}]
             }
           }
         },
@@ -350,14 +352,14 @@
 
         /* Section h2 headers (Analytics, Clinical Education, etc.) */
         section h2 {
-            font-size: 3rem !important;
-            line-height: 3.6rem !important;
+            font-size: 3.8rem !important;
+            line-height: 4.4rem !important;
         }
 
         /* Section h3 sub-headers (Confusion Matrix, Training Loss, etc.) */
         section h3 {
-            font-size: 1.8rem !important;
-            line-height: 2.4rem !important;
+            font-size: 2.2rem !important;
+            line-height: 2.8rem !important;
             margin-bottom: 1rem;
         }
 
@@ -374,8 +376,8 @@
 
         /* Clinical Education - card title h3 */
         #sec-education h3 {
-            font-size: 2rem !important;
-            line-height: 2.6rem !important;
+            font-size: 2.5rem !important;
+            line-height: 3.1rem !important;
             margin-bottom: 0.6rem;
         }
 
@@ -396,8 +398,8 @@
 
         /* Workspace - AI Insights panel heading */
         #sec-workspace h2 {
-            font-size: 1.75rem !important;
-            line-height: 2.4rem !important;
+            font-size: 2.2rem !important;
+            line-height: 2.8rem !important;
         }
 
         /* Workspace - telemetry list labels */
@@ -462,41 +464,40 @@
 
     <!-- TopNavBar (Desktop) -->
     <nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,242,255,0.1)] transition-all duration-300 ease-in-out hidden md:flex justify-between items-center px-margin-desktop h-20">
-        <div class="flex items-center gap-8">
+        <div class="flex items-center gap-6">
             <span class="font-display-lg text-[28px] font-bold text-primary drop-shadow-[0_0_10px_rgba(0,242,255,0.8)] cursor-pointer" onclick="switchTab('dashboard')">NeuroIntel</span>
-            <div class="flex gap-6 items-center pt-2">
-                <button id="nav-dashboard" class="font-label-mono text-label-mono text-primary border-b-2 border-primary pb-1 focus:outline-none" onclick="switchTab('dashboard')">Dashboard</button>
-                <button id="nav-workspace" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('workspace')">Analysis Workspace</button>
-                <button id="nav-analytics" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('analytics')">Model Analytics</button>
-                <button id="nav-education" class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('education')">Clinical Education</button>
+            <div class="flex gap-3 items-center pt-2 flex-wrap">
+                <button id="nav-dashboard" class="font-label-mono text-[18px] text-primary border-b-2 border-primary pb-1 focus:outline-none" onclick="switchTab('dashboard')">Dashboard</button>
+                <button id="nav-workspace" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('workspace')">Workspace</button>
+                <button id="nav-xai" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('xai')">XAI Lab</button>
+                <button id="nav-risk" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('risk')">Risk &amp; NeuroScore</button>
+                <button id="nav-research" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('research')">Research Hub</button>
+                <button id="nav-longitudinal" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('longitudinal')">Longitudinal</button>
+                <button id="nav-analytics" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('analytics')">Analytics</button>
+                <button id="nav-education" class="font-label-mono text-[18px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none" onclick="switchTab('education')">Education</button>
             </div>
         </div>
         <div class="flex items-center gap-6">
-            <!-- Search placeholder -->
-            <div class="relative w-48 lg:w-64">
-                <input class="w-full bg-surface-container-high border-b border-white/10 text-on-surface font-label-mono text-label-mono px-4 py-1.5 focus:outline-none focus:border-primary-container focus:shadow-[0_4px_15px_rgba(0,242,255,0.2)] transition-all bg-transparent rounded h-8" placeholder="Search..." type="text"/>
-                <span class="material-symbols-outlined absolute right-2 top-2 text-on-surface-variant text-sm animate-pulse" style="font-size: 16px;">search</span>
-            </div>
             
             <!-- Uptime/Status info -->
             <div class="flex items-center gap-4 border-r border-white/10 pr-6">
                 <div class="flex items-center gap-2">
-                    <span class="font-label-mono text-[9px] text-on-surface-variant uppercase">Uptime</span>
-                    <span class="font-label-mono text-[11px] text-primary" id="system-uptime">00:00:00</span>
+                    <span class="font-label-mono text-[13px] text-on-surface-variant uppercase">Uptime</span>
+                    <span class="font-label-mono text-[14px] text-primary" id="system-uptime">00:00:00</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="font-label-mono text-[9px] text-on-surface-variant uppercase">AI Engine</span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00f2ff]"></span>
+                    <span class="font-label-mono text-[13px] text-on-surface-variant uppercase">AI Engine</span>
+                    <span class="w-3 h-3 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00f2ff]"></span>
                 </div>
             </div>
 
             <!-- Profile / Settings -->
-            <div class="flex items-center gap-2">
-                <button class="text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-primary-container/10 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[20px]">account_circle</span>
+            <div class="flex items-center gap-3">
+                <button onclick="openProfileModal()" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-primary-container/10 flex items-center justify-center" title="Physician Profile">
+                    <span class="material-symbols-outlined" style="font-size:32px;">account_circle</span>
                 </button>
-                <button class="text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-primary-container/10 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                <button onclick="openSettingsModal()" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-primary-container/10 flex items-center justify-center" title="System Settings">
+                    <span class="material-symbols-outlined" style="font-size:32px;">settings</span>
                 </button>
             </div>
         </div>
@@ -506,7 +507,7 @@
     <nav class="fixed top-0 w-full z-45 bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,242,255,0.1)] transition-all duration-300 ease-in-out flex justify-between items-center px-4 h-16 md:hidden">
         <span class="font-display-lg text-[22px] font-bold text-primary drop-shadow-[0_0_8px_rgba(0,242,255,0.8)] cursor-pointer" onclick="switchTab('dashboard')">NeuroIntel</span>
         <button id="mobile-hamburger" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded focus:outline-none flex items-center justify-center" onclick="openDrawer()">
-            <span class="material-symbols-outlined text-[24px]">menu</span>
+            <span class="material-symbols-outlined text-[30px]">menu</span>
         </button>
     </nav>
 
@@ -782,7 +783,7 @@
                         <!-- Preview Container -->
                         <div id="preview-wrapper" class="absolute inset-0 z-10 hidden">
                             <div class="w-full h-full bg-surface-container-highest relative flex items-center justify-center">
-                                <img id="mri-image-preview" src="#" alt="MRI Preview" class="max-w-full max-h-full object-contain">
+                                <img id="mri-image-preview" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="MRI Preview" class="max-w-full max-h-full object-contain">
                                 <div class="scanner-line"></div>
                             </div>
                             <!-- Viewer HUD controls -->
@@ -795,14 +796,61 @@
                         </div>
                     </div>
 
+                    <!-- Patient Metadata Collapsible -->
+                    <div id="patient-form-panel" class="mt-4 bg-surface-container/60 border border-white/10 rounded-xl p-4 space-y-3">
+                        <button type="button" onclick="document.getElementById('patient-fields').classList.toggle('hidden')" class="w-full flex justify-between items-center font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors">
+                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">person</span> Patient Clinical Data (Optional)</span>
+                            <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                        </button>
+                        <div id="patient-fields" class="hidden grid grid-cols-2 gap-3">
+                            <input id="pt-age" type="number" min="0" max="120" placeholder="Age" class="col-span-1 bg-surface-container-high border border-white/10 rounded px-3 py-2 text-on-surface font-label-mono text-[13px] focus:outline-none focus:border-primary">
+                            <select id="pt-gender" class="col-span-1 bg-surface-container-high border border-white/10 rounded px-3 py-2 text-on-surface font-label-mono text-[13px] focus:outline-none focus:border-primary">
+                                <option value="unknown">Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <input id="pt-id" type="text" placeholder="Patient ID" class="col-span-1 bg-surface-container-high border border-white/10 rounded px-3 py-2 text-on-surface font-label-mono text-[13px] focus:outline-none focus:border-primary">
+                            <input id="pt-date" type="date" class="col-span-1 bg-surface-container-high border border-white/10 rounded px-3 py-2 text-on-surface font-label-mono text-[13px] focus:outline-none focus:border-primary">
+                            <div class="col-span-2">
+                                <label class="font-label-mono text-[12px] text-on-surface-variant block mb-1">Symptoms (select all that apply)</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <label class="flex items-center gap-1 font-label-mono text-[11px] text-on-surface-variant cursor-pointer"><input type="checkbox" value="severe_headache" class="symptom-cb accent-primary"> Severe Headache</label>
+                                    <label class="flex items-center gap-1 font-label-mono text-[11px] text-on-surface-variant cursor-pointer"><input type="checkbox" value="seizures" class="symptom-cb accent-primary"> Seizures</label>
+                                    <label class="flex items-center gap-1 font-label-mono text-[11px] text-on-surface-variant cursor-pointer"><input type="checkbox" value="vision_loss" class="symptom-cb accent-primary"> Vision Loss</label>
+                                    <label class="flex items-center gap-1 font-label-mono text-[11px] text-on-surface-variant cursor-pointer"><input type="checkbox" value="cognitive_decline" class="symptom-cb accent-primary"> Cognitive Decline</label>
+                                    <label class="flex items-center gap-1 font-label-mono text-[11px] text-on-surface-variant cursor-pointer"><input type="checkbox" value="motor_weakness" class="symptom-cb accent-primary"> Motor Weakness</label>
+                                    <label class="flex items-center gap-1 font-label-mono text-[11px] text-on-surface-variant cursor-pointer"><input type="checkbox" value="hormonal_imbalance" class="symptom-cb accent-primary"> Hormonal Imbalance</label>
+                                </div>
+                            </div>
+                            <label class="col-span-1 flex items-center gap-2 font-label-mono text-[12px] text-on-surface-variant cursor-pointer">
+                                <input type="checkbox" id="cb-family" class="accent-primary"> Family History of Brain Tumor
+                            </label>
+                            <label class="col-span-1 flex items-center gap-2 font-label-mono text-[12px] text-on-surface-variant cursor-pointer">
+                                <input type="checkbox" id="cb-prior" class="accent-primary"> Previous Tumor History
+                            </label>
+                        </div>
+                    </div>
                     <!-- CTA Buttons -->
-                    <div class="mt-4 flex gap-4">
-                        <button type="submit" id="classify-btn" class="w-full py-3 rounded bg-primary text-on-primary font-label-mono text-label-mono font-bold flex items-center justify-center gap-2 transition-all hover:scale-[1.01]" disabled>
-                            <span class="material-symbols-outlined" data-icon="settings_accessibility">settings_accessibility</span>
-                            Execute Diagnostics
+                    <div class="mt-4 flex gap-3">
+                        <button type="button" id="classify-btn" onclick="runFullAnalysis()" class="flex-1 py-3 rounded bg-primary text-on-primary font-label-mono text-[13px] font-bold flex items-center justify-center gap-2 transition-all hover:scale-[1.01] disabled:opacity-40" disabled>
+                            <span class="material-symbols-outlined text-[18px]">settings_accessibility</span>
+                            Run Full Analysis
+                        </button>
+                        <button type="button" id="report-btn" onclick="downloadReport()" class="px-4 py-3 rounded holographic-card text-on-surface font-label-mono text-[12px] font-bold flex items-center gap-1 transition-all hover:bg-surface-variant/50 disabled:opacity-30" disabled title="Download PDF Report">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">picture_as_pdf</span>
                         </button>
                     </div>
                 </form>
+
+                <!-- MRI Validation Alert Banner -->
+                <div id="mri-warning-banner" class="hidden mb-4 p-4 rounded-xl border backdrop-blur-md flex items-start gap-3 transition-all">
+                    <span id="mri-warning-icon" class="material-symbols-outlined text-2xl mt-0.5"></span>
+                    <div>
+                        <h4 id="mri-warning-title" class="font-headline-lg-mobile text-[16px] font-bold"></h4>
+                        <p id="mri-warning-message" class="font-label-mono text-[13px] text-on-surface-variant mt-1"></p>
+                    </div>
+                </div>
 
                 <!-- Target Diagnosis Output Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
@@ -872,11 +920,11 @@
                         </div>
                         <div class="flex justify-between items-center border-b border-white/5 pb-2">
                             <span class="font-label-mono text-label-mono text-on-surface-variant">Processing Time</span>
-                            <span class="font-data-metric text-[16px] text-on-surface">-- ms</span>
+                            <span id="telemetry-processing-time" class="font-data-metric text-[16px] text-on-surface">-- ms</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-white/5 pb-2">
                             <span class="font-label-mono text-label-mono text-on-surface-variant">Peak Probability</span>
-                            <span class="font-data-metric text-[16px] text-secondary">-- %</span>
+                            <span id="telemetry-peak-probability" class="font-data-metric text-[16px] text-secondary">-- %</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-white/5 pb-2">
                             <span class="font-label-mono text-label-mono text-on-surface-variant">Reliability Factor</span>
@@ -1020,6 +1068,346 @@
             </div>
         </section>
 
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTION 5: XAI LAB                                                -->
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <section id="sec-xai" class="w-full max-w-container-max hidden space-y-8">
+            <div class="flex items-center justify-between">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Explainable AI Lab</h2>
+                <div class="flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/10 font-label-mono text-[12px] text-secondary">
+                    <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Grad-CAM · Guided Grad-CAM · Saliency Maps
+                </div>
+            </div>
+
+            <!-- XAI Awaiting state -->
+            <div id="xai-awaiting" class="glass-panel rounded-xl p-12 flex flex-col items-center justify-center text-center space-y-4">
+                <span class="material-symbols-outlined text-primary-container" style="font-size:48px">visibility</span>
+                <p class="font-label-mono text-on-surface-variant">Run Full Analysis from the Workspace tab to generate XAI visualizations.</p>
+            </div>
+
+            <!-- XAI Results -->
+            <div id="xai-results" class="hidden space-y-6">
+                <!-- 3-panel image row -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                    <div class="glass-panel rounded-xl p-4 flex flex-col items-center gap-3">
+                        <span class="font-label-mono text-[12px] text-on-surface-variant uppercase tracking-wider">Original MRI</span>
+                        <img id="xai-original" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Original" class="w-full rounded-lg object-contain max-h-56">
+                    </div>
+                    <div class="glass-panel rounded-xl p-4 flex flex-col items-center gap-3">
+                        <span class="font-label-mono text-[12px] text-on-surface-variant uppercase tracking-wider">Grad-CAM Heatmap</span>
+                        <img id="xai-gradcam" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Grad-CAM" class="w-full rounded-lg object-contain max-h-56">
+                    </div>
+                    <div class="glass-panel rounded-xl p-4 flex flex-col items-center gap-3">
+                        <span class="font-label-mono text-[12px] text-on-surface-variant uppercase tracking-wider">Overlay</span>
+                        <img id="xai-overlay" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Overlay" class="w-full rounded-lg object-contain max-h-56">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                    <div class="glass-panel rounded-xl p-4 flex flex-col items-center gap-3">
+                        <span class="font-label-mono text-[12px] text-on-surface-variant uppercase tracking-wider">Saliency Map</span>
+                        <img id="xai-saliency" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Saliency" class="w-full rounded-lg object-contain max-h-56">
+                    </div>
+                    <div class="glass-panel rounded-xl p-4 flex flex-col items-center gap-3">
+                        <span class="font-label-mono text-[12px] text-on-surface-variant uppercase tracking-wider">Guided Grad-CAM</span>
+                        <img id="xai-guided" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Guided GradCAM" class="w-full rounded-lg object-contain max-h-56">
+                    </div>
+                </div>
+                <!-- Clinical Explanation -->
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary-container">auto_stories</span> Clinical Explanation
+                    </h3>
+                    <p id="xai-explanation" class="text-on-surface-variant leading-relaxed text-[15px]">—</p>
+                </div>
+                <!-- Segmentation & Localization -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                    <div class="glass-panel rounded-xl p-4 space-y-3">
+                        <h3 class="font-headline-lg-mobile text-secondary mb-2">Tumor Segmentation</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <img id="seg-overlay" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Segmentation" class="rounded-lg w-full object-contain max-h-40">
+                            <img id="seg-contour" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Contour" class="rounded-lg w-full object-contain max-h-40">
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mt-2">
+                            <div class="bg-white/5 rounded p-2 text-center">
+                                <div class="font-data-metric text-[18px] text-primary" id="seg-area-px">—</div>
+                                <div class="font-label-mono text-[10px] text-on-surface-variant">AREA PX²</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-2 text-center">
+                                <div class="font-data-metric text-[18px] text-secondary" id="seg-area-pct">—</div>
+                                <div class="font-label-mono text-[10px] text-on-surface-variant">AREA %</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-2 text-center">
+                                <div class="font-data-metric text-[18px] text-surface-tint" id="seg-volume">—</div>
+                                <div class="font-label-mono text-[10px] text-on-surface-variant">VOL mm³</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-panel rounded-xl p-4 space-y-3">
+                        <h3 class="font-headline-lg-mobile text-secondary mb-2">Tumor Localization</h3>
+                        <img id="loc-bbox" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Localization" class="rounded-lg w-full object-contain max-h-40">
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <div class="bg-white/5 rounded p-2">
+                                <div class="font-label-mono text-[11px] text-on-surface-variant">Region</div>
+                                <div class="font-label-mono text-[13px] text-primary" id="loc-region">—</div>
+                            </div>
+                            <div class="bg-white/5 rounded p-2">
+                                <div class="font-label-mono text-[11px] text-on-surface-variant">Occupancy</div>
+                                <div class="font-label-mono text-[13px] text-secondary" id="loc-occupancy">—</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTION 6: RISK & NEUROSCORE                                       -->
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <section id="sec-risk" class="w-full max-w-container-max hidden space-y-8">
+            <div class="flex items-center justify-between">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Risk Assessment &amp; NeuroScore</h2>
+                <div class="flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 font-label-mono text-[12px] text-primary-container">
+                    <span class="material-symbols-outlined text-[14px]">science</span> Proprietary Research Metric
+                </div>
+            </div>
+
+            <div id="risk-awaiting" class="glass-panel rounded-xl p-12 flex flex-col items-center justify-center text-center space-y-4">
+                <span class="material-symbols-outlined text-primary-container" style="font-size:48px">monitor_heart</span>
+                <p class="font-label-mono text-on-surface-variant">Run Full Analysis to populate risk assessment and NeuroScore.</p>
+            </div>
+
+            <div id="risk-results" class="hidden grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                <!-- NeuroScore Gauge (large) -->
+                <div class="md:col-span-4 glass-panel rounded-xl p-6 flex flex-col items-center justify-center">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">NeuroScore™</h3>
+                    <div class="relative w-48 h-48 flex items-center justify-center">
+                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="14"/>
+                            <circle id="ns-ring" cx="100" cy="100" r="80" fill="none" stroke="#00dbe7"
+                                stroke-width="14" stroke-linecap="round"
+                                stroke-dasharray="502.65" stroke-dashoffset="502.65"
+                                transform="rotate(-90 100 100)" style="transition:stroke-dashoffset 1.2s ease-in-out"/>
+                        </svg>
+                        <div class="z-10 flex flex-col items-center">
+                            <span id="ns-score-text" class="font-data-metric text-[36px] text-primary leading-none">—</span>
+                            <span class="font-label-mono text-[10px] text-on-surface-variant">/100</span>
+                            <span id="ns-level-text" class="font-label-mono text-[14px] text-secondary mt-1">—</span>
+                        </div>
+                    </div>
+                    <p id="ns-interpretation" class="text-on-surface-variant text-[13px] text-center mt-4 leading-relaxed">—</p>
+                </div>
+
+                <!-- NeuroScore Breakdown -->
+                <div class="md:col-span-4 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Dimensional Breakdown</h3>
+                    <div class="space-y-3" id="ns-dimensions">
+                        <!-- populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Risk Assessment -->
+                <div class="md:col-span-4 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Risk Assessment</h3>
+                    <div class="flex flex-col items-center mb-4">
+                        <div id="risk-badge" class="px-6 py-3 rounded-full font-label-mono text-[16px] font-bold bg-white/10 text-on-surface">—</div>
+                        <div class="mt-2 font-data-metric text-[28px]" id="risk-score-text">— /100</div>
+                    </div>
+                    <div class="space-y-2" id="risk-components">
+                        <!-- populated by JS -->
+                    </div>
+                    <div class="mt-4 p-3 bg-white/5 rounded border border-white/10">
+                        <p id="risk-summary" class="text-on-surface-variant text-[13px] leading-relaxed">—</p>
+                    </div>
+                </div>
+
+                <!-- Radiomics -->
+                <div class="md:col-span-12 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Radiomics Features</h3>
+                    <div id="radiomics-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <!-- populated by JS -->
+                    </div>
+                    <div class="mt-4 flex items-center gap-2 text-on-surface-variant font-label-mono text-[11px]">
+                        <span class="material-symbols-outlined text-[14px]">info</span>
+                        <span id="radiomics-source">Source: OpenCV/scikit-image</span>
+                    </div>
+                </div>
+
+                <!-- MRI Quality -->
+                <div class="md:col-span-12 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">MRI Quality Assessment</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="quality-grid">
+                        <!-- populated by JS -->
+                    </div>
+                    <div class="mt-4 space-y-2" id="quality-warnings-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTION 7: RESEARCH HUB                                            -->
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <section id="sec-research" class="w-full max-w-container-max hidden space-y-8">
+            <div class="flex items-center justify-between">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Research Hub</h2>
+                <div class="flex gap-3">
+                    <button onclick="downloadPaper()" class="flex items-center gap-2 px-4 py-2 rounded holographic-card font-label-mono text-[12px] text-secondary hover:bg-surface-variant/50 transition">
+                        <span class="material-symbols-outlined text-[16px]">article</span> Export Paper Draft
+                    </button>
+                </div>
+            </div>
+
+            <!-- Model Benchmark Table -->
+            <div class="glass-panel rounded-xl p-6">
+                <h3 class="font-headline-lg-mobile text-primary mb-4">Model Benchmark Comparison</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-center border-collapse font-label-mono text-[13px]" id="benchmark-table">
+                        <thead>
+                            <tr class="border-b border-white/10 text-on-surface-variant">
+                                <th class="p-3 text-left">Model</th>
+                                <th class="p-3">Accuracy</th>
+                                <th class="p-3">Precision</th>
+                                <th class="p-3">Recall</th>
+                                <th class="p-3">F1 Score</th>
+                                <th class="p-3">AUC-ROC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="benchmark-tbody" class="divide-y divide-white/5 text-on-surface">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Charts row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Accuracy Comparison</h3>
+                    <canvas id="accuracy-chart" height="200"></canvas>
+                </div>
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">AUC-ROC Comparison</h3>
+                    <canvas id="auc-chart" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Hybrid Architecture -->
+            <div class="glass-panel rounded-xl p-6">
+                <h3 class="font-headline-lg-mobile text-primary mb-4">Novel CNN+ViT Hybrid Architecture</h3>
+                <div id="arch-diagram" class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                    <!-- populated by JS -->
+                </div>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white/5 rounded p-4">
+                        <div class="font-label-mono text-[11px] text-on-surface-variant mb-1">Novelty</div>
+                        <div class="font-label-mono text-[13px] text-primary" id="arch-novelty">—</div>
+                    </div>
+                    <div class="bg-white/5 rounded p-4">
+                        <div class="font-label-mono text-[11px] text-on-surface-variant mb-1">Parameters</div>
+                        <div class="font-label-mono text-[13px] text-secondary" id="arch-params">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NeuroScore Methodology -->
+            <div class="glass-panel rounded-xl p-6">
+                <h3 class="font-headline-lg-mobile text-primary mb-4">NeuroScore™ — Methodology</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white/5 rounded p-4 border-l-2 border-primary">
+                        <div class="font-label-mono text-[11px] text-on-surface-variant mb-2">FORMULATION</div>
+                        <p class="font-label-mono text-[12px] text-on-surface leading-relaxed">NS = Σ(wᵢ × dᵢ) × Qᵣ where Qᵣ = MRI quality reliability factor</p>
+                    </div>
+                    <div class="bg-white/5 rounded p-4 border-l-2 border-secondary">
+                        <div class="font-label-mono text-[11px] text-on-surface-variant mb-2">DIMENSIONS (6)</div>
+                        <ul class="font-label-mono text-[11px] text-on-surface space-y-1">
+                            <li>Tumor Severity (25%)</li><li>Model Confidence (20%)</li>
+                            <li>Tumor Size (15%)</li><li>MRI Quality (10%)</li>
+                            <li>Radiomics (15%)</li><li>Clinical Factors (15%)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white/5 rounded p-4 border-l-2 border-surface-tint">
+                        <div class="font-label-mono text-[11px] text-on-surface-variant mb-2">CLASSIFICATION</div>
+                        <ul class="font-label-mono text-[11px] space-y-1">
+                            <li class="text-green-400">Low Risk: 0–24</li>
+                            <li class="text-yellow-400">Medium Risk: 25–54</li>
+                            <li class="text-red-400">High Risk: 55–74</li>
+                            <li class="text-red-600">Critical: 75–100</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTION 8: LONGITUDINAL ANALYSIS                                   -->
+        <!-- ══════════════════════════════════════════════════════════════════ -->
+        <section id="sec-longitudinal" class="w-full max-w-container-max hidden space-y-8">
+            <div class="flex items-center justify-between">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Longitudinal Analysis</h2>
+                <button onclick="clearLongitudinal()" class="flex items-center gap-2 px-3 py-2 rounded holographic-card font-label-mono text-[12px] text-error hover:bg-surface-variant/50 transition">
+                    <span class="material-symbols-outlined text-[16px]">delete_sweep</span> Clear Session
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                <!-- Trend Summary -->
+                <div class="md:col-span-4 glass-panel rounded-xl p-6 flex flex-col gap-4">
+                    <h3 class="font-headline-lg-mobile text-primary">Progression Trend</h3>
+                    <div class="flex flex-col items-center py-4">
+                        <span id="long-trend-icon" class="material-symbols-outlined text-[48px] text-primary-container">timeline</span>
+                        <div class="font-data-metric text-data-metric text-primary mt-2" id="long-trend">—</div>
+                        <div class="font-label-mono text-[12px] text-on-surface-variant mt-1" id="long-scans">0 scans</div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-[13px] text-on-surface-variant">Growth Rate</span>
+                            <span class="font-label-mono text-[14px] text-error" id="long-growth">—</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-[13px] text-on-surface-variant">Shrinkage Rate</span>
+                            <span class="font-label-mono text-[14px] text-primary" id="long-shrink">—</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="font-label-mono text-[13px] text-on-surface-variant">NeuroScore Δ</span>
+                            <span class="font-label-mono text-[14px] text-secondary" id="long-ns-delta">—</span>
+                        </div>
+                    </div>
+                    <p id="long-note" class="text-on-surface-variant text-[12px] leading-relaxed p-3 bg-white/5 rounded">Upload at least 2 scans to enable longitudinal analysis.</p>
+                </div>
+
+                <!-- Charts -->
+                <div class="md:col-span-8 space-y-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h3 class="font-headline-lg-mobile text-primary mb-4">Tumor Area Over Time</h3>
+                        <canvas id="long-area-chart" height="150"></canvas>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h3 class="font-headline-lg-mobile text-primary mb-4">NeuroScore Progression</h3>
+                        <canvas id="long-ns-chart" height="150"></canvas>
+                    </div>
+                </div>
+
+                <!-- Scan History Table -->
+                <div class="md:col-span-12 glass-panel rounded-xl p-6">
+                    <h3 class="font-headline-lg-mobile text-primary mb-4">Scan History</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse font-label-mono text-[13px]">
+                            <thead>
+                                <tr class="border-b border-white/10 text-on-surface-variant">
+                                    <th class="p-3 text-left">#</th>
+                                    <th class="p-3">Date</th>
+                                    <th class="p-3">Tumor Type</th>
+                                    <th class="p-3">Area %</th>
+                                    <th class="p-3">Volume mm³</th>
+                                    <th class="p-3">NeuroScore</th>
+                                </tr>
+                            </thead>
+                            <tbody id="long-scan-table" class="divide-y divide-white/5 text-on-surface">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
@@ -1031,73 +1419,651 @@
 
     <!-- JavaScript & Canvas 3D brain logic -->
     <script>
-        // Tab switching logic
+        // ════════════════════════════════════════════════════════════════════
+        // NeuroIntel 3.0 — Frontend Controller
+        // ════════════════════════════════════════════════════════════════════
+
+        const ALL_TABS = ['dashboard','workspace','xai','risk','research','longitudinal','analytics','education'];
+        let _lastAnalysisData = null;   // stores full API response
+        let _areaChart = null, _nsChart = null, _accChart = null, _aucChart = null;
+        let _sessionId = localStorage.getItem('neurointel_session') || null;
+
+        // ── Tab Switching ─────────────────────────────────────────────────────
         function switchTab(tabId) {
-            // Hide all sections
-            document.getElementById('sec-dashboard').classList.add('hidden');
-            document.getElementById('sec-workspace').classList.add('hidden');
-            document.getElementById('sec-analytics').classList.add('hidden');
-            document.getElementById('sec-education').classList.add('hidden');
-
-            // Reset navigation links styling (Desktop)
-            const navIds = ['nav-dashboard', 'nav-workspace', 'nav-analytics', 'nav-education'];
-            navIds.forEach(id => {
-                const link = document.getElementById(id);
-                if (link) {
-                    link.className = "font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none";
-                }
+            ALL_TABS.forEach(id => {
+                const sec = document.getElementById(`sec-${id}`);
+                if (sec) sec.classList.add('hidden');
+                const lnk = document.getElementById(`nav-${id}`);
+                if (lnk) lnk.className = "font-label-mono text-[16px] text-on-surface-variant hover:text-primary transition-colors hover:bg-primary-container/10 px-2 py-1 rounded focus:outline-none";
+                const mlnk = document.getElementById(`mobile-nav-${id}`);
+                if (mlnk) mlnk.className = "font-label-mono text-[20px] text-left text-on-surface-variant hover:text-primary pb-2 border-b border-white/5 focus:outline-none";
             });
-
-            // Reset navigation links styling (Mobile)
-            const mobileNavIds = ['mobile-nav-dashboard', 'mobile-nav-workspace', 'mobile-nav-analytics', 'mobile-nav-education'];
-            mobileNavIds.forEach(id => {
-                const link = document.getElementById(id);
-                if (link) {
-                    link.className = "font-label-mono text-[20px] text-left text-on-surface-variant hover:text-primary pb-2 border-b border-white/5 focus:outline-none";
-                }
-            });
-
-            // Show active section
-            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
-            
-            // Set active nav link style (Desktop)
+            const target = document.getElementById(`sec-${tabId}`);
+            if (target) target.classList.remove('hidden');
             const activeLink = document.getElementById(`nav-${tabId}`);
-            if (activeLink) {
-                activeLink.className = "font-label-mono text-label-mono text-primary border-b-2 border-primary pb-1 focus:outline-none";
-            }
-
-            // Set active nav link style (Mobile)
+            if (activeLink) activeLink.className = "font-label-mono text-[16px] text-primary border-b-2 border-primary pb-1 focus:outline-none";
             const activeMobileLink = document.getElementById(`mobile-nav-${tabId}`);
-            if (activeMobileLink) {
-                activeMobileLink.className = "font-label-mono text-[20px] text-left text-primary border-b-2 border-primary pb-2 focus:outline-none";
-            }
+            if (activeMobileLink) activeMobileLink.className = "font-label-mono text-[20px] text-left text-primary border-b-2 border-primary pb-2 focus:outline-none";
+            // Lazy-load research hub on first visit
+            if (tabId === 'research') loadResearchHub();
+            if (tabId === 'longitudinal') loadLongitudinal();
         }
 
-        // Setup clock
+        // ── System Clock ──────────────────────────────────────────────────────
         let startTime = Date.now();
         setInterval(() => {
             let diff = Date.now() - startTime;
             let secs = Math.floor((diff / 1000) % 60);
             let mins = Math.floor((diff / (1000 * 60)) % 60);
-            let hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const timeStr = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            
-            const desktopClock = document.getElementById('system-uptime');
-            if (desktopClock) desktopClock.innerText = timeStr;
-            
-            const mobileClock = document.getElementById('mobile-system-uptime');
-            if (mobileClock) mobileClock.innerText = timeStr;
+            let hrs  = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const ts = `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            ['system-uptime','mobile-system-uptime'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.innerText = ts;
+            });
         }, 1000);
 
-        // Mobile drawer handlers
-        function openDrawer() {
-            const drawer = document.getElementById('mobile-drawer');
-            if (drawer) drawer.classList.remove('translate-x-full');
+        function openDrawer()  { const d = document.getElementById('mobile-drawer'); if(d) d.classList.remove('translate-x-full'); }
+        function closeDrawer() { const d = document.getElementById('mobile-drawer'); if(d) d.classList.add('translate-x-full'); }
+
+        // ════════════════════════════════════════════════════════════════════
+        // FULL ANALYSIS PIPELINE
+        // ════════════════════════════════════════════════════════════════════
+        async function runFullAnalysis() {
+            const fileInput = document.getElementById('file-input');
+            if (!fileInput.files.length) { alert('Please select an MRI image first.'); return; }
+
+            // Hide previous warning banner
+            document.getElementById('mri-warning-banner').classList.add('hidden');
+
+            // Show loading overlay
+            const loader = document.getElementById('scanning-overlay');
+            loader.style.display = 'flex';
+            loader.querySelector('h4').innerText = 'RUNNING FULL AI PIPELINE';
+            loader.querySelector('p').innerText  = 'Quality → Segmentation → Radiomics → XAI → NeuroScore…';
+
+            const btn = document.getElementById('classify-btn');
+            btn.disabled = true;
+
+            // Build FormData
+            const fd = new FormData();
+            fd.append('file', fileInput.files[0]);
+            fd.append('age',            document.getElementById('pt-age')?.value    || '0');
+            fd.append('gender',         document.getElementById('pt-gender')?.value  || 'unknown');
+            fd.append('patient_id',     document.getElementById('pt-id')?.value      || '');
+            fd.append('scan_date',      document.getElementById('pt-date')?.value    || '');
+            fd.append('family_history', document.getElementById('cb-family')?.checked ? 'true' : 'false');
+            fd.append('prior_tumor',    document.getElementById('cb-prior')?.checked  ? 'true' : 'false');
+            fd.append('enable_xai',     'true');
+            if (_sessionId) fd.append('session_id', _sessionId);
+            document.querySelectorAll('.symptom-cb:checked').forEach(cb => fd.append('symptoms', cb.value));
+
+            try {
+                const res  = await fetch('/api/full-analysis', { method: 'POST', body: fd });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    if (data.error === 'invalid_mri' || data.error === 'invalid_mri_unverified') {
+                        showMRIVarning(data.error, data.message);
+                        return;
+                    }
+                    if (data.quality) showQualityRejection(data.quality);
+                    else alert('Analysis error: ' + (data.error || 'Unknown'));
+                    return;
+                }
+
+                _lastAnalysisData = data;
+                _sessionId = data.longitudinal?.session_id;
+                if (_sessionId) localStorage.setItem('neurointel_session', _sessionId);
+
+                // Populate all UI sections
+                populateWorkspace(data);
+                populateXAI(data);
+                populateRisk(data);
+                populateLongitudinal(data.longitudinal);
+
+                // Switch to workspace and enable report btn
+                switchTab('workspace');
+                document.getElementById('report-btn').disabled = false;
+
+            } catch(e) {
+                console.error(e);
+                alert('Network error: ' + e.message);
+            } finally {
+                loader.style.display = 'none';
+                btn.disabled = false;
+            }
         }
 
-        function closeDrawer() {
-            const drawer = document.getElementById('mobile-drawer');
-            if (drawer) drawer.classList.add('translate-x-full');
+        function showMRIVarning(errorType, message) {
+            const banner = document.getElementById('mri-warning-banner');
+            const iconEl = document.getElementById('mri-warning-icon');
+            const titleEl = document.getElementById('mri-warning-title');
+            const msgEl = document.getElementById('mri-warning-message');
+            
+            // Remove previous classes
+            banner.className = "mb-4 p-4 rounded-xl border backdrop-blur-md flex items-start gap-3 transition-all";
+            
+            if (errorType === 'invalid_mri') {
+                banner.classList.add('border-red-500/30', 'bg-red-950/20', 'text-red-400');
+                iconEl.innerText = "error";
+                titleEl.innerText = "❌ Invalid Input";
+                msgEl.innerText = message || "This image is not a valid brain MRI scan. Please upload a T1/T2 brain MRI image.";
+            } else {
+                banner.classList.add('border-amber-500/30', 'bg-amber-950/20', 'text-amber-400');
+                iconEl.innerText = "warning";
+                titleEl.innerText = "⚠️ Verification Failed";
+                msgEl.innerText = message || "Unable to verify MRI image. Please upload a clearer brain MRI scan.";
+            }
+            
+            banner.classList.remove('hidden');
+            
+            // Reset Workspace UI results
+            resetWorkspaceResults();
+            
+            // Switch to workspace tab so user sees the warning banner
+            switchTab('workspace');
+        }
+
+        function resetWorkspaceResults() {
+            // Disable report download button
+            document.getElementById('report-btn').disabled = true;
+            
+            // Clear card bars and text
+            ['glioma','meningioma','pituitary','notumor'].forEach(k => {
+                const bar = document.getElementById(`bar-${k}`);
+                const txt = document.getElementById(`txt-${k}`);
+                const card = document.getElementById(`card-${k}`);
+                if (bar) bar.style.width = '0%';
+                if (txt) txt.innerText = '0.0%';
+                if (card) card.classList.remove('diagnosis-card-active', 'diagnosis-card-active-danger');
+            });
+            
+            // Reset progress ring
+            const ring = document.getElementById('ai-progress-ring');
+            if (ring) {
+                ring.style.strokeDashoffset = '276.46';
+                ring.style.stroke = '#849495';
+            }
+            const progressText = document.getElementById('insights-percentage');
+            if (progressText) progressText.innerText = '0.0%';
+            const progressStatus = document.getElementById('insights-status');
+            if (progressStatus) {
+                progressStatus.innerText = 'INVALID';
+                progressStatus.style.color = '#849495';
+            }
+            
+            // Reset telemetry
+            document.getElementById('telemetry-processing-time').innerText = '-- ms';
+            document.getElementById('telemetry-peak-probability').innerText = '-- %';
+            
+            // Reset clinical summary
+            document.getElementById('clinical-summary').innerText = 'Analysis aborted. Invalid or unverified input image.';
+            
+            // Reset Brain SVG
+            const brainSvg = document.getElementById('brain-svg');
+            if (brainSvg) {
+                brainSvg.classList.remove('has-tumor', 'has-tumor-glioma', 'has-tumor-meningioma', 'has-tumor-pituitary');
+            }
+            document.querySelectorAll('.tumor-hotspot').forEach(el => el.classList.remove('active-tumor'));
+            
+            // Reset other result modules
+            document.getElementById('xai-results')?.classList.add('hidden');
+            document.getElementById('xai-awaiting')?.classList.remove('hidden');
+            document.getElementById('risk-results')?.classList.add('hidden');
+            document.getElementById('risk-awaiting')?.classList.remove('hidden');
+        }
+
+        function populateWorkspace(data) {
+            const { result, confidence, uncertainty, file_path } = data;
+            // Image
+            document.getElementById('mri-image-preview').src = file_path;
+            document.getElementById('upload-prompt').style.display = 'none';
+            document.getElementById('preview-wrapper').style.display = 'block';
+            document.getElementById('classify-btn').disabled = false;
+
+            // Confidence ring
+            const ring   = document.getElementById('ai-progress-ring');
+            const pct    = parseFloat(confidence);
+            const circ   = 276.46;
+            const isGood = result.toLowerCase().includes('notumor') || result.toLowerCase().includes('no tumor');
+            setTimeout(() => {
+                ring.style.strokeDashoffset = circ - (pct / 100) * circ;
+                ring.style.stroke = isGood ? '#10b981' : '#ffb4ab';
+                document.getElementById('insights-status').innerText     = isGood ? 'NORMAL' : 'TUMOR';
+                document.getElementById('insights-status').style.color   = isGood ? '#10b981' : '#ffb4ab';
+                let c = 0;
+                const iv = setInterval(() => {
+                    c = Math.min(c + 0.5, pct);
+                    document.getElementById('insights-percentage').innerText = c.toFixed(1) + '%';
+                    if (c >= pct) clearInterval(iv);
+                }, 8);
+            }, 200);
+
+            // Telemetry
+            document.getElementById('telemetry-processing-time').innerText = (data.processing_ms || 0).toFixed(0) + ' ms';
+            document.getElementById('telemetry-peak-probability').innerText = (data.confidence || 0).toFixed(1) + ' %';
+
+            // Cards
+            const rl = result.toLowerCase();
+            const unc = uncertainty?.uncertainty_pct || 0;
+            const classProbs = uncertainty?.class_results || [];
+
+            const cardMap = { glioma:0, meningioma:3, pituitary:0, notumor:0 };
+            // Use uncertainty class_results for bar values
+            if (classProbs.length === 4) {
+                // class_results order matches CLASS_LABELS = ['pituitary','glioma','notumor','meningioma']
+                const order = ['pituitary','glioma','notumor','meningioma'];
+                classProbs.forEach((cr, i) => {
+                    const key = cr.label;
+                    const bar = document.getElementById(`bar-${key}`);
+                    const txt = document.getElementById(`txt-${key}`);
+                    if (bar) { setTimeout(() => { bar.style.width = cr.mean_prob + '%'; }, 400); }
+                    if (txt) { setTimeout(() => { txt.innerText = cr.mean_prob.toFixed(1) + '%'; }, 400); }
+                });
+            }
+
+            // Active card highlight
+            ['glioma','meningioma','pituitary','notumor'].forEach(k => {
+                document.getElementById(`card-${k}`)?.classList.remove('diagnosis-card-active','diagnosis-card-active-danger');
+            });
+            if (rl.includes('notumor') || rl.includes('no tumor')) {
+                document.getElementById('card-notumor')?.classList.add('diagnosis-card-active');
+                document.getElementById('clinical-summary').innerText = 'Cerebral regions present symmetrical ventricles and standard parenchyma. No mass effects detected. ' + (data.neuroscore?.interpretation || '');
+            } else if (rl.includes('glioma')) {
+                document.getElementById('card-glioma')?.classList.add('diagnosis-card-active-danger');
+                document.getElementById('clinical-summary').innerText = `AI analysis indicates hyperintense cortical tissue anomalies consistent with Glioma. Confidence: ${confidence}% ±${unc.toFixed(1)}%. ${data.neuroscore?.interpretation || ''}`;
+            } else if (rl.includes('meningioma')) {
+                document.getElementById('card-meningioma')?.classList.add('diagnosis-card-active-danger');
+                document.getElementById('clinical-summary').innerText = `Extra-axial masses with dural tail signs indicate Meningioma. Confidence: ${confidence}% ±${unc.toFixed(1)}%. ${data.neuroscore?.interpretation || ''}`;
+            } else if (rl.includes('pituitary')) {
+                document.getElementById('card-pituitary')?.classList.add('diagnosis-card-active-danger');
+                document.getElementById('clinical-summary').innerText = `Sella turcica anomalies consistent with Pituitary adenoma. Confidence: ${confidence}% ±${unc.toFixed(1)}%. ${data.neuroscore?.interpretation || ''}`;
+            }
+
+            // Brain SVG update
+            initializeBrainSvg();
+        }
+
+        // ── XAI Population ───────────────────────────────────────────────────
+        function populateXAI(data) {
+            const { xai, segmentation, localization } = data;
+            document.getElementById('xai-awaiting').classList.add('hidden');
+            document.getElementById('xai-results').classList.remove('hidden');
+
+            if (xai && !xai.error) {
+                setB64Img('xai-original', xai.original_b64);
+                setB64Img('xai-gradcam',  xai.gradcam_b64);
+                setB64Img('xai-overlay',  xai.overlay_b64);
+                setB64Img('xai-saliency', xai.saliency_b64);
+                setB64Img('xai-guided',   xai.guided_gradcam_b64);
+                document.getElementById('xai-explanation').innerText = xai.explanation || '—';
+            }
+            if (segmentation) {
+                setB64Img('seg-overlay', segmentation.overlay_b64);
+                setB64Img('seg-contour', segmentation.contour_b64);
+                document.getElementById('seg-area-px').innerText  = segmentation.area_px?.toLocaleString() || '—';
+                document.getElementById('seg-area-pct').innerText = (segmentation.area_pct || 0).toFixed(1) + '%';
+                document.getElementById('seg-volume').innerText   = (segmentation.volume_mm3 || 0).toFixed(0);
+            }
+            if (localization) {
+                setB64Img('loc-bbox', localization.bbox_image_b64);
+                document.getElementById('loc-region').innerText    = localization.region_label || '—';
+                document.getElementById('loc-occupancy').innerText = (localization.occupancy_ratio || 0).toFixed(1) + '%';
+            }
+        }
+
+        // ── Risk & NeuroScore Population ─────────────────────────────────────
+        function populateRisk(data) {
+            const { neuroscore, risk, radiomics, quality } = data;
+            document.getElementById('risk-awaiting').classList.add('hidden');
+            document.getElementById('risk-results').classList.remove('hidden');
+
+            // NeuroScore gauge
+            if (neuroscore) {
+                const ns = neuroscore.neuroscore;
+                const ring = document.getElementById('ns-ring');
+                const circ = 502.65;
+                setTimeout(() => {
+                    ring.style.strokeDashoffset = circ - (ns / 100) * circ;
+                    ring.style.stroke = neuroscore.color || '#00dbe7';
+                }, 200);
+                animateCounter('ns-score-text', ns, 1);
+                document.getElementById('ns-level-text').innerText = neuroscore.level || '—';
+                document.getElementById('ns-level-text').style.color = neuroscore.color || '';
+                document.getElementById('ns-interpretation').innerText = neuroscore.interpretation || '—';
+
+                // Dimensions
+                const dimsEl = document.getElementById('ns-dimensions');
+                dimsEl.innerHTML = '';
+                const dims = neuroscore.dimensions || {};
+                const dimLabels = {
+                    tumor_severity:'Tumor Severity', model_confidence:'Model Confidence',
+                    tumor_size:'Tumor Size', mri_quality:'MRI Quality',
+                    radiomics_complexity:'Radiomics', clinical_factors:'Clinical Factors'
+                };
+                Object.entries(dimLabels).forEach(([k, lbl]) => {
+                    const v = dims[k] ?? 0;
+                    dimsEl.innerHTML += `<div class="flex items-center justify-between">
+                        <span class="font-label-mono text-[12px] text-on-surface-variant">${lbl}</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-20 bg-white/5 h-1.5 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-container rounded-full" style="width:${Math.min(v,100)}%;transition:width 0.8s"></div>
+                            </div>
+                            <span class="font-label-mono text-[11px] text-primary w-8 text-right">${v.toFixed(0)}</span>
+                        </div>
+                    </div>`;
+                });
+            }
+
+            // Risk
+            if (risk) {
+                const badge = document.getElementById('risk-badge');
+                badge.innerText = risk.risk_level + ' Risk';
+                badge.style.background = risk.risk_color + '22';
+                badge.style.color      = risk.risk_color;
+                badge.style.border     = `1px solid ${risk.risk_color}55`;
+                animateCounter('risk-score-text', risk.risk_score, 0, ' /100');
+                document.getElementById('risk-summary').innerText = risk.summary || '—';
+
+                const compEl = document.getElementById('risk-components');
+                compEl.innerHTML = '';
+                const comps = risk.components || {};
+                const compLabels = {
+                    tumor_type_risk:'Tumor Type', size_risk:'Size Factor',
+                    clinical_risk:'Clinical Factors', radiomics_risk:'Radiomics',
+                    quality_penalty:'Quality Penalty'
+                };
+                Object.entries(compLabels).forEach(([k,lbl]) => {
+                    const v = comps[k] ?? 0;
+                    compEl.innerHTML += `<div class="flex justify-between items-center text-[12px] border-b border-white/5 py-1">
+                        <span class="font-label-mono text-on-surface-variant">${lbl}</span>
+                        <span class="font-label-mono text-primary">${v.toFixed(1)}</span>
+                    </div>`;
+                });
+            }
+
+            // Radiomics grid
+            if (radiomics?.features) {
+                const grid = document.getElementById('radiomics-grid');
+                grid.innerHTML = '';
+                const featLabels = {
+                    firstorder_Mean:'Mean', firstorder_Entropy:'Entropy',
+                    firstorder_Kurtosis:'Kurtosis', firstorder_Skewness:'Skewness',
+                    firstorder_Energy:'Energy', firstorder_Variance:'Variance',
+                    glcm_Contrast:'GLCM Contrast', glcm_Homogeneity:'Homogeneity',
+                    glcm_Correlation:'Correlation', glcm_Dissimilarity:'Dissimilarity',
+                    shape_Sphericity:'Sphericity', shape_Solidity:'Solidity',
+                    shape_Elongation:'Elongation', shape_AreaPx:'Area Px',
+                    shape_Perimeter:'Perimeter'
+                };
+                Object.entries(featLabels).forEach(([k, lbl]) => {
+                    const v = radiomics.features[k];
+                    if (v === undefined) return;
+                    grid.innerHTML += `<div class="bg-white/5 rounded p-3 text-center">
+                        <div class="font-data-metric text-[14px] text-primary">${typeof v==='number'?v.toFixed(4):v}</div>
+                        <div class="font-label-mono text-[10px] text-on-surface-variant mt-1">${lbl}</div>
+                    </div>`;
+                });
+                document.getElementById('radiomics-source').innerText = 'Source: ' + (radiomics.source || 'opencv');
+            }
+
+            // Quality grid
+            if (quality) {
+                const qg = document.getElementById('quality-grid');
+                qg.innerHTML = '';
+                [
+                    ['Overall Score', quality.score, quality.status],
+                    ['Blur Score',    quality.blur_score,      ''],
+                    ['Contrast',      quality.contrast_score,  ''],
+                    ['Noise Score',   quality.noise_score,     ''],
+                    ['Brightness',    quality.brightness_score,''],
+                ].forEach(([label, val, status]) => {
+                    const col = val >= 60 ? '#10b981' : val >= 35 ? '#f59e0b' : '#ef4444';
+                    qg.innerHTML += `<div class="bg-white/5 rounded p-3 text-center">
+                        <div class="font-data-metric text-[18px]" style="color:${col}">${val ?? '—'}</div>
+                        <div class="font-label-mono text-[10px] text-on-surface-variant">${label}</div>
+                        ${status ? `<div class="font-label-mono text-[9px] mt-1" style="color:${col}">${status.toUpperCase()}</div>` : ''}
+                    </div>`;
+                });
+                // Warnings
+                const wl = document.getElementById('quality-warnings-list');
+                wl.innerHTML = (quality.warnings || []).map(w =>
+                    `<div class="flex items-start gap-2 text-[12px] font-label-mono text-error">
+                        <span class="material-symbols-outlined text-[14px] mt-0.5">warning</span><span>${w}</span></div>`
+                ).join('');
+            }
+        }
+
+        // ── Longitudinal ──────────────────────────────────────────────────────
+        function populateLongitudinal(data) {
+            if (!data) return;
+            const { trend, growth_rate, shrinkage_rate, ns_delta, scans, n_scans, clinical_note, chart_data } = data;
+            const trendIcons = { growing:'trending_up', shrinking:'trending_down', stable:'trending_flat', insufficient_data:'help_outline' };
+            document.getElementById('long-trend-icon').innerText = trendIcons[trend] || 'timeline';
+            document.getElementById('long-trend').innerText      = (trend || '—').replace('_',' ');
+            document.getElementById('long-scans').innerText      = `${n_scans || 0} scan${n_scans!==1?'s':''}  on record`;
+            document.getElementById('long-growth').innerText     = growth_rate   != null ? growth_rate   + '%' : '—';
+            document.getElementById('long-shrink').innerText     = shrinkage_rate!= null ? shrinkage_rate + '%' : '—';
+            document.getElementById('long-ns-delta').innerText   = ns_delta      != null ? (ns_delta>=0?'+':'') + ns_delta : '—';
+            document.getElementById('long-note').innerText       = clinical_note || '—';
+
+            // Scan table
+            const tbody = document.getElementById('long-scan-table');
+            tbody.innerHTML = (scans || []).map((s,i) =>
+                `<tr><td class="p-2 text-left text-on-surface-variant">${i+1}</td>
+                 <td class="p-2">${s.date}</td><td class="p-2">${s.tumor_type}</td>
+                 <td class="p-2">${s.area_pct?.toFixed(1)}%</td>
+                 <td class="p-2">${s.volume_mm3?.toFixed(0)}</td>
+                 <td class="p-2 text-primary">${s.neuroscore?.toFixed(1)}</td></tr>`
+            ).join('');
+
+            // Charts
+            if (chart_data && chart_data.labels?.length > 0) {
+                const chartOpts = {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#b9cacb', font: { size: 11 } } } },
+                    scales: {
+                        x: { ticks: { color: '#849495' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#849495' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                };
+                if (_areaChart) _areaChart.destroy();
+                _areaChart = new Chart(document.getElementById('long-area-chart'), {
+                    type: 'line',
+                    data: { labels: chart_data.labels, datasets: [{
+                        label: 'Tumor Area %', data: chart_data.area_pct,
+                        borderColor: '#00dbe7', backgroundColor: 'rgba(0,219,231,0.1)',
+                        tension: 0.4, fill: true, pointBackgroundColor: '#00dbe7',
+                    }] },
+                    options: chartOpts,
+                });
+                if (_nsChart) _nsChart.destroy();
+                _nsChart = new Chart(document.getElementById('long-ns-chart'), {
+                    type: 'line',
+                    data: { labels: chart_data.labels, datasets: [{
+                        label: 'NeuroScore', data: chart_data.neuroscore,
+                        borderColor: '#9d05ff', backgroundColor: 'rgba(157,5,255,0.1)',
+                        tension: 0.4, fill: true, pointBackgroundColor: '#9d05ff',
+                    }] },
+                    options: chartOpts,
+                });
+            }
+        }
+
+        async function loadLongitudinal() {
+            if (!_sessionId) return;
+            try {
+                const res  = await fetch(`/api/longitudinal?session_id=${_sessionId}`);
+                const data = await res.json();
+                populateLongitudinal(data);
+            } catch(e) { console.warn('Longitudinal load failed:', e); }
+        }
+
+        async function clearLongitudinal() {
+            if (!_sessionId || !confirm('Clear all scan history?')) return;
+            await fetch('/api/longitudinal/clear', {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ session_id: _sessionId })
+            });
+            localStorage.removeItem('neurointel_session');
+            _sessionId = null;
+            loadLongitudinal();
+        }
+
+        // ── Research Hub ─────────────────────────────────────────────────────
+        let _researchLoaded = false;
+        async function loadResearchHub() {
+            if (_researchLoaded) return;
+            _researchLoaded = true;
+            try {
+                const [benchRes, archRes] = await Promise.all([
+                    fetch('/api/research/benchmark'),
+                    fetch('/api/research/architecture'),
+                ]);
+                const bench = await benchRes.json();
+                const arch  = await archRes.json();
+                populateBenchmark(bench);
+                populateArchitecture(arch);
+            } catch(e) { console.warn('Research hub load failed:', e); }
+        }
+
+        function populateBenchmark(bench) {
+            const tbody = document.getElementById('benchmark-tbody');
+            const models = Object.keys(bench);
+            const bestAcc = Math.max(...models.map(m => bench[m].accuracy));
+            tbody.innerHTML = models.map(m => {
+                const b = bench[m];
+                const isHybrid = m.includes('Hybrid');
+                const rowStyle = isHybrid ? 'background:rgba(0,219,231,0.06)' : '';
+                const bold = isHybrid ? 'font-weight:bold;color:#00dbe7' : '';
+                return `<tr style="${rowStyle}">
+                    <td class="p-3 text-left" style="${bold}">${m}${isHybrid?' ⭐':''}</td>
+                    <td class="p-2" style="${bold}">${b.accuracy.toFixed(1)}%</td>
+                    <td class="p-2">${b.precision.toFixed(1)}%</td>
+                    <td class="p-2">${b.recall.toFixed(1)}%</td>
+                    <td class="p-2">${b.f1.toFixed(1)}%</td>
+                    <td class="p-2">${b.auc_roc.toFixed(3)}</td>
+                </tr>`;
+            }).join('');
+
+            // Accuracy chart
+            if (_accChart) _accChart.destroy();
+            _accChart = new Chart(document.getElementById('accuracy-chart'), {
+                type: 'bar',
+                data: {
+                    labels: models.map(m => m.split(' ')[0]),
+                    datasets: [{ label: 'Accuracy (%)',
+                        data: models.map(m => bench[m].accuracy),
+                        backgroundColor: models.map(m => m.includes('Hybrid') ? 'rgba(0,219,231,0.7)' : 'rgba(157,5,255,0.5)'),
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#b9cacb' } } },
+                    scales: {
+                        x: { ticks: { color: '#849495' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { min: 80, ticks: { color: '#849495' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            // AUC chart
+            if (_aucChart) _aucChart.destroy();
+            _aucChart = new Chart(document.getElementById('auc-chart'), {
+                type: 'bar',
+                data: {
+                    labels: models.map(m => m.split(' ')[0]),
+                    datasets: [{ label: 'AUC-ROC',
+                        data: models.map(m => bench[m].auc_roc),
+                        backgroundColor: models.map(m => m.includes('Hybrid') ? 'rgba(0,219,231,0.7)' : 'rgba(157,5,255,0.5)'),
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#b9cacb' } } },
+                    scales: {
+                        x: { ticks: { color: '#849495' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { min: 0.9, ticks: { color: '#849495' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+        }
+
+        function populateArchitecture(arch) {
+            document.getElementById('arch-novelty').innerText = arch.novelty || '—';
+            document.getElementById('arch-params').innerText  = arch.parameters || '—';
+            const diag = document.getElementById('arch-diagram');
+            diag.innerHTML = (arch.blocks || []).map(b =>
+                `<div class="bg-white/5 rounded p-3 text-center border border-white/10 flex flex-col gap-1">
+                    <div class="font-label-mono text-[11px] text-primary">${b.name}</div>
+                    <div class="font-label-mono text-[10px] text-on-surface-variant">${b.shape}</div>
+                    ${b.note ? `<div class="font-label-mono text-[9px] text-secondary">${b.note}</div>` : ''}
+                </div>`
+            ).join('');
+        }
+
+        async function downloadPaper() {
+            const a = document.createElement('a');
+            a.href = '/api/paper';
+            a.download = 'neurointel_research_paper_draft.md';
+            a.click();
+        }
+
+        // ── PDF Report Download ───────────────────────────────────────────────
+        async function downloadReport() {
+            if (!_lastAnalysisData) { alert('Run Full Analysis first.'); return; }
+            const d = _lastAnalysisData;
+            // Build filename from prediction filename field
+            const fn = d.file_path?.split('/').pop() || '';
+            try {
+                const res = await fetch('/api/report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patient_info:   d.patient_info,
+                        prediction:     { tumor_type: d.result, confidence: d.confidence },
+                        quality:        d.quality,
+                        segmentation:   d.segmentation,
+                        localization:   d.localization,
+                        radiomics:      d.radiomics,
+                        neuroscore:     d.neuroscore,
+                        risk:           d.risk,
+                        xai:            d.xai,
+                        uncertainty:    d.uncertainty,
+                        filename:       fn,
+                    }),
+                });
+                const blob = await res.blob();
+                const url  = URL.createObjectURL(blob);
+                const a    = document.createElement('a');
+                a.href = url; a.download = `neurointel_report_${d.patient_info?.patient_id || 'patient'}.pdf`;
+                a.click(); URL.revokeObjectURL(url);
+            } catch(e) { alert('Report generation failed: ' + e.message); }
+        }
+
+        function showQualityRejection(quality) {
+            alert(`MRI Quality Too Poor for Analysis\n\nScore: ${quality.score}/100\n\n` +
+                  quality.warnings.join('\n') + '\n\nSuggestions:\n' + quality.suggestions.join('\n'));
+        }
+
+        // ── Utilities ─────────────────────────────────────────────────────────
+        function setB64Img(id, b64) {
+            const el = document.getElementById(id);
+            if (el && b64) el.src = 'data:image/png;base64,' + b64;
+        }
+
+        function animateCounter(id, target, decimals=0, suffix='') {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let v = 0;
+            const step = target / 60;
+            const iv = setInterval(() => {
+                v = Math.min(v + step, target);
+                el.innerText = v.toFixed(decimals) + suffix;
+                if (v >= target) clearInterval(iv);
+            }, 16);
         }
 
 
@@ -1179,7 +2145,7 @@
         function resetFile(e) {
             e.stopPropagation();
             fileInput.value = '';
-            mriImage.src = '#';
+            mriImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
             promptContainer.style.display = 'flex';
             previewWrapper.style.display = 'none';
             classifyBtn.disabled = true;
@@ -1332,6 +2298,185 @@
                 }, 400);
             });
         }
+
+        // ── Settings & Profile Modals Logic ──────────────────────────────────
+        function openSettingsModal() {
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+        function openProfileModal() {
+            document.getElementById('profile-modal').classList.remove('hidden');
+            // Show session count from local storage scans
+            try {
+                let scans = [];
+                if (_sessionId) {
+                    const sessionData = localStorage.getItem(`session_scans_${_sessionId}`);
+                    if (sessionData) scans = JSON.parse(sessionData);
+                }
+                document.getElementById('profile-active-sessions').innerText = scans.length || 0;
+            } catch (e) {
+                document.getElementById('profile-active-sessions').innerText = "0";
+            }
+        }
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+        function updateThresholdVal(val) {
+            document.getElementById('threshold-val').innerText = val + '%';
+            localStorage.setItem('settings_min_confidence', val);
+        }
+        function updateOpacityVal(val) {
+            document.getElementById('opacity-val').innerText = val + '%';
+            localStorage.setItem('settings_xai_opacity', val);
+            // Apply immediately to xai images if they exist
+            ['xai-overlay', 'seg-overlay'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.opacity = val / 100;
+            });
+        }
+        function setAppTheme(theme) {
+            localStorage.setItem('settings_theme', theme);
+            
+            // Remove active styles from buttons
+            ['default', 'cyberpunk', 'clinical'].forEach(t => {
+                const btn = document.getElementById(`theme-${t}-btn`);
+                if (btn) {
+                    btn.className = "px-2 py-1.5 border border-white/10 hover:border-primary rounded text-center text-[11px] text-on-surface-variant";
+                }
+            });
+            
+            // Add active style to selected button
+            const activeBtn = document.getElementById(`theme-${theme}-btn`);
+            if (activeBtn) {
+                activeBtn.className = "px-2 py-1.5 border border-primary bg-primary/10 rounded text-center text-[11px] text-primary";
+            }
+
+            // Apply theme changes to body
+            const body = document.body;
+            if (theme === 'cyberpunk') {
+                body.style.filter = "hue-rotate(20deg) saturate(1.2)";
+            } else if (theme === 'clinical') {
+                body.style.filter = "grayscale(0.4) contrast(1.1)";
+            } else {
+                body.style.filter = "none";
+            }
+        }
+        function resetProfileSession() {
+            if (confirm("Are you sure you want to clear your current local tracking session? This will reset all longitudinal history.")) {
+                localStorage.removeItem('neurointel_session');
+                _sessionId = null;
+                alert("Session cleared. Reloading page...");
+                window.location.reload();
+            }
+        }
+
+        // Load settings on startup
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedConf = localStorage.getItem('settings_min_confidence') || '75';
+            const savedOpacity = localStorage.getItem('settings_xai_opacity') || '70';
+            const savedTheme = localStorage.getItem('settings_theme') || 'default';
+
+            const sliderConf = document.getElementById('threshold-slider');
+            if (sliderConf) {
+                sliderConf.value = savedConf;
+                updateThresholdVal(savedConf);
+            }
+
+            const sliderOpacity = document.getElementById('opacity-slider');
+            if (sliderOpacity) {
+                sliderOpacity.value = savedOpacity;
+                updateOpacityVal(savedOpacity);
+            }
+
+            setAppTheme(savedTheme);
+        });
     </script>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-background/80 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-md p-6 rounded-xl border border-white/10 space-y-6 relative">
+            <button onclick="closeSettingsModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors flex"><span class="material-symbols-outlined">close</span></button>
+            <h3 class="font-display-lg text-primary text-glow-cyan text-[20px] font-bold">System Settings</h3>
+            
+            <div class="space-y-4 font-label-mono text-[13px]">
+                <!-- Threshold slider -->
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-on-surface-variant">Min Confidence Alert</span>
+                        <span class="text-primary" id="threshold-val">75%</span>
+                    </div>
+                    <input type="range" id="threshold-slider" min="50" max="95" value="75" class="w-full accent-primary" oninput="updateThresholdVal(this.value)">
+                </div>
+
+                <!-- XAI Opacity -->
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-on-surface-variant">XAI Overlay Opacity</span>
+                        <span class="text-secondary" id="opacity-val">70%</span>
+                    </div>
+                    <input type="range" id="opacity-slider" min="20" max="100" value="70" class="w-full accent-secondary" oninput="updateOpacityVal(this.value)">
+                </div>
+
+                <!-- Color Theme -->
+                <div class="space-y-2">
+                    <span class="text-on-surface-variant block mb-1">Visual Theme</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setAppTheme('default')" id="theme-default-btn" class="px-2 py-1.5 border border-primary bg-primary/10 rounded text-center text-[11px] text-primary">Obsidian</button>
+                        <button onclick="setAppTheme('cyberpunk')" id="theme-cyberpunk-btn" class="px-2 py-1.5 border border-white/10 hover:border-secondary rounded text-center text-[11px] text-on-surface-variant">Cyberpunk</button>
+                        <button onclick="setAppTheme('clinical')" id="theme-clinical-btn" class="px-2 py-1.5 border border-white/10 hover:border-on-surface rounded text-center text-[11px] text-on-surface-variant">Clinical</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeSettingsModal()" class="px-4 py-2 bg-primary text-on-primary font-bold rounded hover:scale-[1.02] active:scale-[0.98] transition-all">Save &amp; Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-background/80 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-sm p-6 rounded-xl border border-white/10 space-y-6 relative text-center">
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors flex"><span class="material-symbols-outlined">close</span></button>
+            
+            <div class="flex flex-col items-center space-y-3 pt-4">
+                <div class="w-20 h-20 rounded-full border-2 border-primary-container p-1 shadow-[0_0_15px_rgba(0,242,255,0.4)]">
+                    <div class="w-full h-full rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[48px]">account_circle</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-display-lg text-[22px] font-bold text-on-surface">Dr. Elena Rostova</h3>
+                    <p class="font-label-mono text-[12px] text-primary">Senior Neuro-Oncologist</p>
+                </div>
+            </div>
+
+            <div class="border-t border-b border-white/5 py-4 space-y-2 text-left font-label-mono text-[12px] text-on-surface-variant">
+                <div class="flex justify-between">
+                    <span>Institution:</span>
+                    <span class="text-on-surface">NeuroIntel Institute</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Department:</span>
+                    <span class="text-on-surface">Clinical AI &amp; Diagnostics</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Access Level:</span>
+                    <span class="text-secondary">Chief Clinician</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Active Sessions:</span>
+                    <span class="text-on-surface" id="profile-active-sessions">0</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 pt-2">
+                <button onclick="resetProfileSession()" class="w-full py-2 bg-secondary/15 hover:bg-secondary/25 border border-secondary/30 text-secondary font-bold rounded transition-colors text-[13px] font-label-mono">Clear Local Session</button>
+                <button onclick="closeProfileModal()" class="w-full py-2 bg-primary text-on-primary font-bold rounded hover:scale-[1.02] transition-transform text-[13px] font-label-mono">Close</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
