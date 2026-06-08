@@ -10,6 +10,9 @@ dist/
 build/
 .eggs/
 
+# Runtime session data
+static/sessions/
+
 # Virtual environments
 venv/
 env/
@@ -19,20 +22,28 @@ ENV/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Model weights (large files - add model.h5 manually if needed)
-# models/model.h5
-
 # Uploaded files (runtime only)
 uploads/
 
-# Dataset (too large for git)
-temp_dataset/
+# Large Kaggle datasets — download separately from Kaggle
+# https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset
+Training/
+Testing/
+
+# Test images (non-MRI validation samples)
+test_car.jpg
+test_cat.jpg
+test_human_face.jpg
+test_landscape.jpg
+test_walnut.jpg
 
 # IDE / Editor
 .vscode/
 .idea/
 *.suo
 *.user
+pyrightconfig.json
+typings/
 
 # OS
 .DS_Store
